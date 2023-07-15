@@ -9,7 +9,6 @@ import 'package:quoter/screen/exploer/quotes_list.dart';
 
 class ExplorerScreen extends StatefulWidget {
 
-  static const _tabCount = 10;
 
   const ExplorerScreen({super.key});
 
@@ -37,8 +36,6 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocProvider(
         create: (context) => FetchTabBloc(),
         child: BlocBuilder<FetchTabBloc, TabState>(
@@ -56,9 +53,9 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
       );
     }
     _controller ??= TabController(
-          length: ExplorerScreen._tabCount, vsync: this)
+          length: (state as FetchededTabState).categories.length, vsync: this)
         ..addListener(() {
-          _tabContents![_controller!.index].fetchQuotes();
+          _tabContents![_controller!.index].fetchQuotesIfNeeded();
           _fetchTabBloc?.add(SelectTabEvent(position: _controller!.index));
         });
     return Container(
@@ -87,7 +84,7 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
       QuoteCategory category = state.categories[i];
       _tabBars!.add(Tab(
         icon: Text(
-          "TAB TITLE ${category.title}",
+          "${category.title}",
           style: TextStyle(fontFamily: "Lato", fontWeight: FontWeight.w900, color: category.selected ? selectedTabTextColor : unselectedTabTextColor),
         ),
       ));
@@ -102,6 +99,7 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
         _tabContents!.add(QuotesList(category: state.categories[i],));
       }
     }
+    _tabContents![0].fetchQuotesIfNeeded();
     return _tabContents!;
   }
 }

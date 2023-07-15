@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quoter/common/dependency_injection.dart';
 import 'package:quoter/screen/home/home_screen.dart';
 
-void main() {
+void main() async {
+  await configInstances();
   runApp(const MyApp());
 }
 
