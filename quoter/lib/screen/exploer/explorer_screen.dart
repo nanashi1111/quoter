@@ -55,7 +55,6 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
     _controller ??= TabController(
           length: (state as FetchededTabState).categories.length, vsync: this)
         ..addListener(() {
-          _tabContents![_controller!.index].fetchQuotesIfNeeded();
           _fetchTabBloc?.add(SelectTabEvent(position: _controller!.index));
         });
     return Container(
@@ -99,7 +98,6 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
         _tabContents!.add(QuotesList(category: state.categories[i],));
       }
     }
-    _tabContents![0].fetchQuotesIfNeeded();
     return _tabContents!;
   }
 }

@@ -4,9 +4,15 @@ abstract class QuoteState extends Equatable {
   const QuoteState();
 }
 
+
 class FetchingQuoteState extends QuoteState {
+
+  bool firstFetch;
+
+  FetchingQuoteState({required this.firstFetch});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [firstFetch];
 
 }
 

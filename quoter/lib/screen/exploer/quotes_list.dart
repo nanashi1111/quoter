@@ -4,32 +4,49 @@ import 'package:quoter/common/views.dart';
 import 'package:quoter/models/category.dart';
 import 'package:quoter/screen/exploer/blocs/fetch_quote_bloc.dart';
 
-class QuotesList extends StatelessWidget {
+class QuotesList extends StatefulWidget {
   QuoteCategory category;
-  FetchQuoteBloc? bloc;
 
   QuotesList({super.key, required this.category});
 
   @override
+  State<QuotesList> createState() => _QuotesListState();
+}
+
+class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMixin {
+  FetchQuoteBloc? bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (bloc!.state is FetchingQuoteState) {
+        //bloc!.add(FetchQuoteEvent(category: widget.category.title));
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // BlocProvider(
-    //   create: (context) => FetchQuoteBloc(),
-    // );
-    print("Init QuotesList for ${category.title}");
     return BlocProvider(
-      create: (context) => FetchQuoteBloc(),
-      child: BlocBuilder<FetchQuoteBloc, QuoteState>(
-        builder: (context, state) {
-          bloc ??= context.read<FetchQuoteBloc>();
-          return _provideWidget(state);
-        },
-      ),
-    );
+        create: (context) => FetchQuoteBloc(),
+        child: BlocConsumer<FetchQuoteBloc, QuoteState>(
+          builder: (context, state) {
+            bloc ??= context.read<FetchQuoteBloc>();
+            return _provideWidget(state);
+          },
+          listener: (context, state) {
+            print("_QuotesListState listener $state");
+            if (state is FetchingQuoteState && state.firstFetch) {
+              bloc!.add(FetchQuoteEvent(category: widget.category.title));
+            }
+          },
+        ));
   }
 
   Widget _provideWidget(QuoteState state) {
     if (state is FetchingQuoteState) {
-      return const Center(
+      return  const Center(
         child: Text("Loading..."),
       );
     }
@@ -49,7 +66,7 @@ class QuotesList extends StatelessWidget {
               return verticalSpacing(10);
             },
             itemCount: (state as FetchedQuoteState).quotes.length,
-            key: PageStorageKey(category),
+            key: PageStorageKey(widget.category),
           ),
         )
       ],
@@ -57,13 +74,16 @@ class QuotesList extends StatelessWidget {
   }
 
   void fetchQuotesIfNeeded() async {
-    print("Call API from ${category.title}");
     Future.delayed(Duration(milliseconds: 300), () {
       if (bloc!.state is FetchingQuoteState) {
-        bloc!.add(FetchQuoteEvent(category: category.title));
+        bloc!.add(FetchQuoteEvent(category: widget.category.title));
       }
     });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class QuoteItem extends StatelessWidget {
