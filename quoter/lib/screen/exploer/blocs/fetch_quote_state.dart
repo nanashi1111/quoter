@@ -7,12 +7,11 @@ abstract class QuoteState extends Equatable {
 
 class FetchingQuoteState extends QuoteState {
 
-  bool firstFetch;
 
-  FetchingQuoteState({required this.firstFetch});
+  FetchingQuoteState();
 
   @override
-  List<Object?> get props => [firstFetch];
+  List<Object?> get props => [];
 
 }
 

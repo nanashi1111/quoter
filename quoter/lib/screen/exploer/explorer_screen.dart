@@ -71,14 +71,13 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
               ),
               controller: _controller,
             ),
-            Expanded(child: TabBarView(controller: _controller, children: _provideTabContent(state as FetchededTabState)))
+            Expanded(child: TabBarView(controller: _controller, children: _provideTabContent(state)))
           ],
         ));
   }
 
   List<Widget> _provideTabBar(FetchededTabState state) {
     _tabBars = List<Widget>.of([], growable: true);
-    print("_provideTabBar: ${state.categories}");
     for (int i = 0; i < state.categories.length; i++) {
       QuoteCategory category = state.categories[i];
       _tabBars!.add(Tab(

@@ -14,20 +14,20 @@ class FetchQuoteBloc extends Bloc<FetchQuoteEvent, QuoteState> {
 
   QuoteRepository repository = getIt.get<QuoteRepository>();
 
-  FetchQuoteBloc() : super(FetchingQuoteState(firstFetch: true))  {
+  FetchQuoteBloc() : super(FetchingQuoteState())  {
     print("Init FetchQuoteBloc bloc");
     on<FetchQuoteEvent>((event, emit) async {
       _fetchQuotes(event);
     });
 
-    Future.delayed(const Duration(milliseconds: 100), (){
-      emit(FetchingQuoteState(firstFetch: true));
-    });
+    // Future.delayed(const Duration(milliseconds: 100), (){
+    //   emit(FetchingQuoteState(firstFetch: true));
+    // });
 
   }
   
   _fetchQuotes(FetchQuoteEvent event) async {
-    emit(FetchingQuoteState(firstFetch: false));
+    emit(FetchingQuoteState());
     List<QuoteEntity> quoteEntities = await repository.getQuotes(event.category);
     List<Quote> quotes = quoteEntities.map((e) => Quote(content: e.content)).toList();
     emit(FetchedQuoteState(quotes: quotes));

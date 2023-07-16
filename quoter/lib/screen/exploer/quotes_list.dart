@@ -19,17 +19,12 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (bloc!.state is FetchingQuoteState) {
-        //bloc!.add(FetchQuoteEvent(category: widget.category.title));
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => FetchQuoteBloc(),
+        create: (context) => FetchQuoteBloc()..add(FetchQuoteEvent(category: widget.category.title)),
         child: BlocConsumer<FetchQuoteBloc, QuoteState>(
           builder: (context, state) {
             bloc ??= context.read<FetchQuoteBloc>();
@@ -37,9 +32,9 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
           },
           listener: (context, state) {
             print("_QuotesListState listener $state");
-            if (state is FetchingQuoteState && state.firstFetch) {
-              bloc!.add(FetchQuoteEvent(category: widget.category.title));
-            }
+            // if (state is FetchingQuoteState && state.firstFetch) {
+            //   bloc!.add(FetchQuoteEvent(category: widget.category.title));
+            // }
           },
         ));
   }
