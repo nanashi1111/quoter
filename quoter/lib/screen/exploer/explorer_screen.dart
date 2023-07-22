@@ -1,11 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
-import 'package:quoter/models/category.dart';
+import 'package:quoter/models/quote_category.dart';
 import 'package:quoter/screen/exploer/blocs/fetch_tab_bloc.dart';
 import 'package:quoter/screen/exploer/quotes_list.dart';
+import 'package:quoter/screen/loading/loading_screen.dart';
 
 class ExplorerScreen extends StatefulWidget {
 
@@ -26,31 +26,23 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
   var selectedIndex = 0;
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
-      _fetchTabBloc?.add(FetchTabEvent());
-    });
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => FetchTabBloc(),
-        child: BlocBuilder<FetchTabBloc, TabState>(
+        create: (context) => FetchTabBloc()..add(FetchTabEvent()),
+        child: BlocConsumer<FetchTabBloc, TabState>(
           builder: (context, state) {
             _fetchTabBloc ??= context.read<FetchTabBloc>();
             return _provideWidget(state);
+          },
+          listener: (context, state) {
+
           },
         ));
   }
 
   Widget _provideWidget(TabState state) {
     if (state is FetchingTabs) {
-      return const Center(
-        child: Text("Loading..."),
-      );
+      return LoadingScreen();
     }
     _controller ??= TabController(
           length: (state as FetchededTabState).categories.length, vsync: this)
@@ -83,7 +75,8 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
       _tabBars!.add(Tab(
         icon: Text(
           "${category.title}",
-          style: TextStyle(fontFamily: "Lato", fontWeight: FontWeight.w900, color: category.selected ? selectedTabTextColor : unselectedTabTextColor),
+          style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, color: (category.selected ?? false) ? selectedTabTextColor : unselectedTabTextColor),
+          //style: TextStyle(fontFamily: "Lato", fontWeight: FontWeight.w900, color: (category.selected ?? false) ? selectedTabTextColor : unselectedTabTextColor),
         ),
       ));
     }

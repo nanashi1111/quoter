@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/views.dart';
-import 'package:quoter/models/category.dart';
+import 'package:quoter/models/quote.dart';
+import 'package:quoter/models/quote_category.dart';
+import 'package:quoter/screen/editor/editor_screen.dart';
 import 'package:quoter/screen/exploer/blocs/fetch_quote_bloc.dart';
+import 'package:quoter/screen/loading/loading_screen.dart';
 
 class QuotesList extends StatefulWidget {
   QuoteCategory category;
@@ -24,26 +31,16 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => FetchQuoteBloc()..add(FetchQuoteEvent(category: widget.category.title)),
-        child: BlocConsumer<FetchQuoteBloc, QuoteState>(
-          builder: (context, state) {
-            bloc ??= context.read<FetchQuoteBloc>();
-            return _provideWidget(state);
-          },
-          listener: (context, state) {
-            print("_QuotesListState listener $state");
-            // if (state is FetchingQuoteState && state.firstFetch) {
-            //   bloc!.add(FetchQuoteEvent(category: widget.category.title));
-            // }
-          },
-        ));
+        create: (context) => FetchQuoteBloc()..add(FetchQuoteEvent(category: widget.category.title ?? "")),
+        child: BlocBuilder<FetchQuoteBloc, QuoteState>(builder: (context, state) {
+          bloc ??= context.read<FetchQuoteBloc>();
+          return _provideWidget(state);
+        }));
   }
 
   Widget _provideWidget(QuoteState state) {
     if (state is FetchingQuoteState) {
-      return  const Center(
-        child: Text("Loading..."),
-      );
+      return LoadingScreen();
     }
 
     return Column(
@@ -52,9 +49,15 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, pos) {
+              Quote quote = (state as FetchedQuoteState).quotes[pos];
               return QuoteItem(
                 pos: 1 + pos % 6,
-                content: (state as FetchedQuoteState).quotes[pos].content,
+                content: quote,
+                callback: () {
+                  Map<String, String> pathParameters = <String, String>{}
+                    ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
+                  context.pushNamed("editor", pathParameters: pathParameters);
+                },
               );
             },
             separatorBuilder: (context, pos) {
@@ -68,24 +71,17 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
     );
   }
 
-  void fetchQuotesIfNeeded() async {
-    Future.delayed(Duration(milliseconds: 300), () {
-      if (bloc!.state is FetchingQuoteState) {
-        bloc!.add(FetchQuoteEvent(category: widget.category.title));
-      }
-    });
-  }
-
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
 class QuoteItem extends StatelessWidget {
   int pos;
-  String content;
+  Quote content;
 
-  QuoteItem({super.key, required this.pos, required this.content});
+  VoidCallback callback;
+
+  QuoteItem({super.key, required this.pos, required this.content, required this.callback});
 
   String _provideImagePath() {
     return "assets/images/pattern_$pos.jpg";
@@ -94,38 +90,48 @@ class QuoteItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * 0.9;
-    return Center(
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: Stack(
-          children: [
-            Image(
-              image: AssetImage(
-                _provideImagePath(),
-              ),
-              fit: BoxFit.cover,
-              width: size,
-              height: size,
-            ),
-            Container(
-              color: Colors.black.withOpacity(0.3),
-            ),
-            Center(
-                child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                content,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Lato',
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 25,
+    return GestureDetector(
+      onTap: () {
+        callback();
+      },
+      child: Center(
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: Stack(
+            children: [
+              Image(
+                image: AssetImage(
+                  _provideImagePath(),
                 ),
+                fit: BoxFit.cover,
+                width: size,
+                height: size,
               ),
-            ))
-          ],
+              Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+              Center(
+                  child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  content.content ?? "",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.montserrat(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
+                  /*style: const TextStyle(
+                    fontFamily: 'Lato',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 25,
+                  ),*/
+                ),
+              ))
+            ],
+          ),
         ),
       ),
     );
