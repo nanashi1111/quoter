@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/models/quote_category.dart';
-import 'package:quoter/screen/editor/editor_screen.dart';
 import 'package:quoter/screen/exploer/blocs/fetch_quote_bloc.dart';
+import 'package:quoter/screen/loading/list_loading_footer.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
 
 class QuotesList extends StatefulWidget {
@@ -23,9 +23,21 @@ class QuotesList extends StatefulWidget {
 class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMixin {
   FetchQuoteBloc? bloc;
 
+  final ScrollController _controller = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _controller.addListener(() {
+      if (!_controller.hasClients || (bloc?.state is FetchedQuoteState && (bloc?.state as FetchedQuoteState).loadingMore == true)) {
+        return;
+      }
+      final thresholdReached = _controller.position.extentAfter < 100;
+      if (!thresholdReached) {
+        return;
+      }
+      bloc?.add(FetchQuoteEvent(category: widget.category.title ?? ""));
+    });
   }
 
   @override
@@ -49,21 +61,26 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, pos) {
-              Quote quote = (state as FetchedQuoteState).quotes[pos];
-              return QuoteItem(
-                pos: 1 + pos % 6,
-                content: quote,
-                callback: () {
-                  Map<String, String> pathParameters = <String, String>{}
-                    ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
-                  context.pushNamed("editor", pathParameters: pathParameters);
-                },
-              );
+              int quoteCount = (state as FetchedQuoteState).quotes.length;
+              if (pos < quoteCount) {
+                Quote quote = (state as FetchedQuoteState).quotes[pos];
+                return QuoteItem(
+                  pos: 1 + pos % 6,
+                  content: quote,
+                  callback: () {
+                    Map<String, String> pathParameters = <String, String>{}
+                      ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
+                    context.pushNamed("editor", pathParameters: pathParameters);
+                  },
+                );
+              }
+              return const ListLoadingFooter();
             },
             separatorBuilder: (context, pos) {
               return verticalSpacing(10);
             },
-            itemCount: (state as FetchedQuoteState).quotes.length,
+            controller: _controller,
+            itemCount: 1 + (state as FetchedQuoteState).quotes.length,
             key: PageStorageKey(widget.category),
           ),
         )

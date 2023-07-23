@@ -19,10 +19,12 @@ class FetchedQuoteState extends QuoteState {
 
   List<Quote> quotes;
 
-  FetchedQuoteState({required this.quotes});
+  bool loadingMore;
+
+  FetchedQuoteState({required this.quotes, required this.loadingMore});
 
   @override
-  List<Object?> get props => [quotes];
+  List<Object?> get props => [quotes, loadingMore];
 
 
 }

@@ -23,3 +23,21 @@ class ChangeTextEvent extends EditorEvent {
   List<Object?> get props => [newText];
 
 }
+
+class ChangeTextColorEvent extends EditorEvent {
+  Color color;
+
+  ChangeTextColorEvent({required this.color});
+
+  @override
+  List<Object?> get props => [color];
+}
+
+class ChangeBackgroundColorEvent extends EditorEvent {
+  Color color;
+
+  ChangeBackgroundColorEvent({required this.color});
+
+  @override
+  List<Object?> get props => [color];
+}

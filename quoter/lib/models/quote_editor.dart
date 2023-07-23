@@ -9,8 +9,9 @@ class QuoteEditor extends Equatable {
   Color shadowColor = Colors.black;
   double shadowOpacity = 0.5;
   int backgroundPatternPos = 1;
+  Color backgroundColor = Colors.transparent;
 
-  QuoteEditor copy({String? content, Color? textColor, Color? shadowColor, double? shadowOpacity, int? backgroundPatternPos}) {
+  QuoteEditor copy({String? content, Color? textColor, Color? shadowColor, double? shadowOpacity, int? backgroundPatternPos, Color? backgroundColor}) {
     QuoteEditor result = QuoteEditor();
     if (content != null) {
       result.content = content;
@@ -27,9 +28,12 @@ class QuoteEditor extends Equatable {
     if (backgroundPatternPos != null) {
       result.backgroundPatternPos = backgroundPatternPos;
     }
+    if (backgroundColor != null) {
+      result.backgroundColor = backgroundColor;
+    }
     return result;
   }
 
   @override
-  List<Object?> get props => [content, textColor, shadowColor, shadowOpacity, backgroundPatternPos];
+  List<Object?> get props => [content, textColor, shadowColor, shadowOpacity, backgroundPatternPos, backgroundColor];
 }

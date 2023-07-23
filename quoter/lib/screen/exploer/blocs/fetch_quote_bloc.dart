@@ -16,10 +16,20 @@ class FetchQuoteBloc extends Bloc<FetchQuoteEvent, QuoteState> {
 
   FetchQuoteBloc() : super(FetchingQuoteState())  {
     on<FetchQuoteEvent>((event, emit) async {
-      emit(FetchingQuoteState());
+      if (state is FetchedQuoteState) {
+        FetchedQuoteState newState = FetchedQuoteState(quotes: (state as FetchedQuoteState).quotes, loadingMore: true);
+        emit(newState);
+      } else {
+        emit(FetchingQuoteState());
+      }
       List<QuoteEntity> quoteEntities = await repository.getQuotes(event.category);
-      List<Quote> quotes = quoteEntities.map((e) => Quote(content: e.content ?? "")).toList();
-      emit(FetchedQuoteState(quotes: quotes));
+      //Fetched
+      List<Quote> quotes = List.of([], growable: true);
+      if (state is FetchedQuoteState) {
+        quotes.addAll((state as FetchedQuoteState).quotes);
+      }
+      quotes.addAll(quoteEntities.map((e) => Quote(content: e.content ?? "")).toList());
+      emit(FetchedQuoteState(quotes: quotes, loadingMore: false));
     });
   }
   

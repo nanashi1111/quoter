@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -22,11 +23,43 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
     on<ChangeTextEvent>((event, emit) async {
       if (state is EditingState) {
         QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
-        // QuoteEditor quoteEditor = QuoteEditor();
-        // quoteEditor.content = event.newText;
-        // quoteEditor.backgroundPatternPos = currentQuoteEditor.backgroundPatternPos;
-        emit(EditingState(quoteEditor: currentQuoteEditor.copy(content: event.newText, backgroundPatternPos: currentQuoteEditor.backgroundPatternPos)));
-        //emit(InitEditorState());
+        EditingState newState = EditingState(
+            quoteEditor: currentQuoteEditor.copy(
+                content: event.newText,
+                textColor: currentQuoteEditor.textColor,
+                backgroundPatternPos: currentQuoteEditor.backgroundPatternPos,
+                backgroundColor: currentQuoteEditor.backgroundColor));
+        print("Emit_NewState: ${newState.hashCode}: $newState from bloc ${hashCode}");
+        emit(newState);
+      }
+    });
+
+    on<ChangeTextColorEvent>((event, emit) async {
+      if (state is EditingState) {
+        QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
+        EditingState newState = EditingState(
+            quoteEditor: currentQuoteEditor.copy(
+                content: currentQuoteEditor.content,
+                textColor: event.color,
+                backgroundPatternPos: currentQuoteEditor.backgroundPatternPos,
+                backgroundColor: currentQuoteEditor.backgroundColor));
+        print("Emit_NewState: ${newState.hashCode}: $newState from bloc ${hashCode}");
+        emit(newState);
+      }
+    });
+
+
+    on<ChangeBackgroundColorEvent>((event, emit) async {
+      if (state is EditingState) {
+        QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
+        EditingState newState = EditingState(
+            quoteEditor: currentQuoteEditor.copy(
+                content: currentQuoteEditor.content,
+                textColor: currentQuoteEditor.textColor,
+                backgroundPatternPos: currentQuoteEditor.backgroundPatternPos,
+                backgroundColor: event.color));
+        print("Emit_NewState: ${newState.hashCode}: $newState from bloc ${hashCode}");
+        emit(newState);
       }
     });
   }

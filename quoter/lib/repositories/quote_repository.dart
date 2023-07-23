@@ -18,7 +18,7 @@ class QuoteRepository extends BaseRepository {
 
   Future<List<QuoteEntity>> getQuotes(String categorySlug) async {
     Response<String> response = await dio.get(ApiPaths.PATH_QUOTES,
-        queryParameters: <String, String>{}..addEntries(List.of([const MapEntry("limit", "50"), MapEntry("tags", categorySlug)])));
+        queryParameters: <String, String>{}..addEntries(List.of([const MapEntry("limit", "10"), MapEntry("tags", categorySlug)])));
     if (response.statusCode == 200 && response.data != null) {
       return List<QuoteEntity>.from(json.decode(response.data!).map((x) => QuoteEntity.fromJson(x)));
     } else {

@@ -29,7 +29,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)  {
+      create: (context) {
         _bloc = HomeBloc();
         return _bloc;
       },
@@ -39,38 +39,43 @@ class HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               backgroundColor: appBarColor,
               elevation: 0,
-              leading: const Icon(
-                Icons.search_rounded,
-                color: tabBarColor,
-              ),
+              leading: GestureDetector(
+                  onTap: () {
+                    context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: SvgPicture.asset(
+                      'assets/images/ic_quoter_search.svg',
+                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                      width: 45,
+                      height: 45,
+                    ),
+                  )),
             ),
             extendBody: true,
             floatingActionButton: Padding(
-              padding: const EdgeInsets.all(5),
-              child:SizedBox(
-                width: 80, height: 80,
-                child:  FloatingActionButton(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40.0))
+                padding: const EdgeInsets.all(5),
+                child: SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: FloatingActionButton(
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40.0))),
+                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      Map<String, String> params = {}..addEntries(List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")]));
+                      context.pushNamed("editor", pathParameters: params);
+                    },
+                    child: SvgPicture.asset(
+                      'assets/images/ic_quoter_plus.svg',
+                      colorFilter: const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
+                      width: 50,
+                      height: 50,
+                    ),
                   ),
-                  backgroundColor: Colors.white,
-                  onPressed: () {
-                    Map<String, String> params = {}..addEntries(
-                      List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")])
-                    );
-                    context.pushNamed("editor", pathParameters: params);
-                  },
-                  child: SvgPicture.asset(
-                    'assets/images/ic_quoter_plus.svg',
-                    colorFilter: const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-              )
-            ),
+                )),
             floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-            bottomNavigationBar: _provideAppBar(context,state),
+            bottomNavigationBar: _provideAppBar(context, state),
             body: _provideContent(state),
           );
         },
@@ -103,7 +108,9 @@ class HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             GestureDetector(
-              onTap: () { context.read<HomeBloc>().add(HomeEvent(targetPosition: 0)); },
+              onTap: () {
+                context.read<HomeBloc>().add(HomeEvent(targetPosition: 0));
+              },
               child: SvgPicture.asset(
                 'assets/images/ic_quoter_home.svg',
                 colorFilter: ColorFilter.mode(_provideTabBarItemColor(0, currentPosition), BlendMode.srcIn),
@@ -112,7 +119,9 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () { context.read<HomeBloc>().add(HomeEvent(targetPosition: 1)); },
+              onTap: () {
+                context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
+              },
               child: SvgPicture.asset(
                 'assets/images/ic_quoter_search.svg',
                 colorFilter: ColorFilter.mode(_provideTabBarItemColor(1, currentPosition), BlendMode.srcIn),
@@ -125,7 +134,6 @@ class HomeScreenState extends State<HomeScreen> {
       );
     }
     return const Text("");
-
   }
 
   Widget _provideContent(HomeState state) {
