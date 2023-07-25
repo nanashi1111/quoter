@@ -1,5 +1,6 @@
 ## Quoter
 Quote & saying collection and creation
+
 The app that helps you talk like a philosopher
 
 ## Features
