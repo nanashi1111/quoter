@@ -14,7 +14,7 @@ The app that helps you talk like a philosopher
 ## Screens
 Browse             |     Edit      | Pick color
 :-------------------------:|:-------------:|:-------------------------:
-![](browse.png)  | ![](edit.png) | ![](color.png)
+![](quoter/browse.png)  | ![](quoter/edit.png) | ![](quoter/color.png)
 
 ## Build step
 
