@@ -16,7 +16,7 @@ Browse             |     Edit      | Pick color
 :-------------------------:|:-------------:|:-------------------------:
 ![](quoter/browse.png)  | ![](quoter/edit.png) | ![](quoter/color.png)
 
-## Build step
+## Build steps
 
 Run following commands
 - flutter pub run build_runner watch --delete-conflicting-outputs
