@@ -64,7 +64,6 @@ class EditorScreen extends StatelessWidget {
                     Text(
                       "Create your quote",
                       style: GoogleFonts.montserrat(color: const Color.fromRGBO(18, 34, 59, 1), fontWeight: FontWeight.w600, fontSize: 36),
-                      //style: TextStyle(color: Color.fromRGBO(18, 34, 59, 1), fontFamily: 'Lato', fontWeight: FontWeight.w900, fontSize: 36),
                     ),
                     verticalSpacing(15),
                     BlocBuilder<EditorBloc, EditorState>(
@@ -78,13 +77,11 @@ class EditorScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              verticalSpacing(5),
               Expanded(child: BlocBuilder<EditorOptionBloc, EditorOptionState>(
                 builder: (context, state) {
                   return const EditorOptions();
                 },
               ))
-              //Flexible(child: EditorOptions())
             ],
           ),
         ));

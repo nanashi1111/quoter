@@ -19,6 +19,7 @@ class EditorOptions extends StatelessWidget {
       builder: (context, state) {
         return ListView(shrinkWrap: true, children: [
           _provideEditorOptions(state as EditorOptionList),
+          verticalSpacing(10),
           _provideSelector(state as EditorOptionList)
         ]);
       },
@@ -28,18 +29,18 @@ class EditorOptions extends StatelessWidget {
   Widget _provideEditorOptions(EditorOptionList state) {
     return SizedBox(
       height: 65,
-      child: ListView.separated(
+      child: Padding(padding: EdgeInsets.only(left: 5, right: 5), child:  ListView.separated(
           itemBuilder: (context, pos) {
-            return EditorOptionItem(
-              editorOption: (state as EditorOptionList).editorOptions[pos],
+            return  EditorOptionItem(
+              editorOption: state.editorOptions[pos],
             );
           },
           separatorBuilder: (context, pos) {
             return verticalSpacing(10);
           },
-          itemCount: (state as EditorOptionList).editorOptions.length,
+          itemCount: state.editorOptions.length,
           scrollDirection: Axis.horizontal,
-          shrinkWrap: true),
+          shrinkWrap: true),)
     );
   }
 
@@ -51,8 +52,6 @@ class EditorOptions extends StatelessWidget {
         return ColorSelector();
       case TYPE_SELECT_TEXT_SIZE:
         return TextSizeSelector();
-      case TYPE_SELECT_TOP_LAYER_COLOR:
-        return ColorSelector();
       case TYPE_SELECT_BACKGROUND_COLOR:
         return ColorSelector();
       case TYPE_SELECT_BACKGROUND_WALLPAPER:

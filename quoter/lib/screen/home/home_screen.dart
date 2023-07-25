@@ -36,46 +36,11 @@ class HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: appBarColor,
-              elevation: 0,
-              leading: GestureDetector(
-                  onTap: () {
-                    context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
-                    child: SvgPicture.asset(
-                      'assets/images/ic_quoter_search.svg',
-                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                      width: 45,
-                      height: 45,
-                    ),
-                  )),
-            ),
             extendBody: true,
-            floatingActionButton: Padding(
-                padding: const EdgeInsets.all(5),
-                child: SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: FloatingActionButton(
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40.0))),
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      Map<String, String> params = {}..addEntries(List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")]));
-                      context.pushNamed("editor", pathParameters: params);
-                    },
-                    child: SvgPicture.asset(
-                      'assets/images/ic_quoter_plus.svg',
-                      colorFilter: const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-                )),
+            appBar: _provideAppBar(context),
+            floatingActionButton: _provideFloatingActionButton(context),
             floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-            bottomNavigationBar: _provideAppBar(context, state),
+            bottomNavigationBar: _provideBottomNavigationBar(context, state),
             body: _provideContent(state),
           );
         },
@@ -91,7 +56,50 @@ class HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Widget _provideAppBar(BuildContext context, HomeState state) {
+  AppBar _provideAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: appBarColor,
+      elevation: 0,
+      leading: GestureDetector(
+          onTap: () {
+            context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: SvgPicture.asset(
+              'assets/images/ic_quoter_search.svg',
+              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              width: 45,
+              height: 45,
+            ),
+          )),
+    );
+  }
+
+  Widget _provideFloatingActionButton(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(5),
+        child: SizedBox(
+          width: 80,
+          height: 80,
+          child: FloatingActionButton(
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40.0))),
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Map<String, String> params = {}..addEntries(List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")]));
+              context.pushNamed("editor", pathParameters: params);
+            },
+            child: SvgPicture.asset(
+              'assets/images/ic_quoter_plus.svg',
+              colorFilter: const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
+              width: 50,
+              height: 50,
+            ),
+          ),
+        ));
+  }
+
+  Widget _provideBottomNavigationBar(BuildContext context, HomeState state) {
     if (state is HomeStateLoaded) {
       int currentPosition = state.currentPosition;
       return BottomAppBar(

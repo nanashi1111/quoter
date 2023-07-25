@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:go_router/go_router.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/screen/editor/editor_screen.dart';

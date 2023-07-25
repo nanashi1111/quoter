@@ -61,9 +61,9 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, pos) {
-              int quoteCount = (state as FetchedQuoteState).quotes.length;
+              int quoteCount = state.quotes.length;
               if (pos < quoteCount) {
-                Quote quote = (state as FetchedQuoteState).quotes[pos];
+                Quote quote = state.quotes[pos];
                 return QuoteItem(
                   pos: 1 + pos % 6,
                   content: quote,

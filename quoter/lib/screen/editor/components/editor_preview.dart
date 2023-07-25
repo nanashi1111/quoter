@@ -22,11 +22,6 @@ class EditorPreview extends StatelessWidget {
         _providePatternBackground(size),
         _provideColorBackground(size),
         Container(
-          width: size,
-          height: size,
-          color: Colors.black.withOpacity(0.5),
-        ),
-        Container(
           color: Colors.transparent,
           alignment: Alignment.center,
           width: size,

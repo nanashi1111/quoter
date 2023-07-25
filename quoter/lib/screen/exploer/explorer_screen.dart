@@ -8,8 +8,6 @@ import 'package:quoter/screen/exploer/quotes_list.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
 
 class ExplorerScreen extends StatefulWidget {
-
-
   const ExplorerScreen({super.key});
 
   @override
@@ -34,9 +32,7 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
             _fetchTabBloc ??= context.read<FetchTabBloc>();
             return _provideWidget(state);
           },
-          listener: (context, state) {
-
-          },
+          listener: (context, state) {},
         ));
   }
 
@@ -44,28 +40,29 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
     if (state is FetchingTabs) {
       return LoadingScreen();
     }
-    _controller ??= TabController(
-          length: (state as FetchededTabState).categories.length, vsync: this)
+
+    if (state is FetchededTabState) {
+      _controller ??= TabController(length: state.categories.length, vsync: this)
         ..addListener(() {
           _fetchTabBloc?.add(SelectTabEvent(position: _controller!.index));
         });
-    return Container(
-        color: Colors.white,
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-            TabBar(
-              isScrollable: true,
-              indicatorColor: Colors.blue,
-              tabs: _provideTabBar(
-                  state as FetchededTabState
+      return Container(
+          color: Colors.white,
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            children: [
+              TabBar(
+                isScrollable: true,
+                indicatorColor: Colors.blue,
+                tabs: _provideTabBar(state),
+                controller: _controller,
               ),
-              controller: _controller,
-            ),
-            Expanded(child: TabBarView(controller: _controller, children: _provideTabContent(state)))
-          ],
-        ));
+              Expanded(child: TabBarView(controller: _controller, children: _provideTabContent(state)))
+            ],
+          ));
+    }
+    return Container();
   }
 
   List<Widget> _provideTabBar(FetchededTabState state) {
@@ -76,7 +73,6 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
         icon: Text(
           "${category.title}",
           style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, color: (category.selected ?? false) ? selectedTabTextColor : unselectedTabTextColor),
-          //style: TextStyle(fontFamily: "Lato", fontWeight: FontWeight.w900, color: (category.selected ?? false) ? selectedTabTextColor : unselectedTabTextColor),
         ),
       ));
     }
@@ -87,7 +83,9 @@ class _ExplorerScreenState extends State<ExplorerScreen> with SingleTickerProvid
     if (_tabContents == null) {
       _tabContents = List<QuotesList>.of([], growable: true);
       for (int i = 0; i < state.categories.length; i++) {
-        _tabContents!.add(QuotesList(category: state.categories[i],));
+        _tabContents!.add(QuotesList(
+          category: state.categories[i],
+        ));
       }
     }
     return _tabContents!;

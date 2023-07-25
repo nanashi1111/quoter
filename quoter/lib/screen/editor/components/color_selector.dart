@@ -9,19 +9,28 @@ import 'package:quoter/screen/editor/blocs/editor_option_bloc.dart';
 
 import '../blocs/editor_bloc.dart';
 
+const int COLUMNS = 4;
+const double BORDER_RADIUS = 10;
+
 class ColorSelector extends StatelessWidget {
+
+
+  const ColorSelector({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 5, right: 5),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 5, crossAxisSpacing: 5),
+        gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: COLUMNS, mainAxisSpacing: 0, crossAxisSpacing: 0),
         itemBuilder: (context, position) {
           if (position == 0) {
             return PickColorSelectorItem();
           } else {
             return ColorSelectorItem(
               color: textColors[position - 1],
+              position: position,
+              totalCount: 1 + textColors.length,
             );
           }
         },
@@ -40,12 +49,20 @@ class PickColorSelectorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BoxDecoration decoration = BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), border: Border.all(color: Colors.black.withOpacity(0.2)));
+    BoxDecoration decoration = BoxDecoration(color: HexColor("F6F4EB"), borderRadius: const BorderRadius.only(
+      topLeft: Radius.circular(BORDER_RADIUS)
+    ),
+       // border: Border(
+       //   top: BorderSide(width: 5)
+       // )
+       //border: Border.all(color: Colors.black.withOpacity(0.2))
+    );
     return InkWell(
       child: Container(
         decoration: decoration,
         alignment: Alignment.center,
         child: Icon(Icons.add, size: 50, color: Colors.black.withOpacity(0.5)),
+
       ),
       onTap: () {
         showDialog(
@@ -114,13 +131,36 @@ class PickColorSelectorItem extends StatelessWidget {
 class ColorSelectorItem extends StatelessWidget {
   Color color;
 
-  ColorSelectorItem({super.key, required this.color});
+  int position;
+  int totalCount;
+  int itemPerRow = 3;
+
+  ColorSelectorItem({super.key, required this.color, required this.position, required this.totalCount});
+
+  BorderRadius _provideBorderRadius() {
+    if (position == COLUMNS - 1) {
+      return const BorderRadius.only(
+          topRight: Radius.circular(BORDER_RADIUS)
+      );
+    }
+    if (position == totalCount - 1) {
+      return const BorderRadius.only(
+          bottomRight: Radius.circular(BORDER_RADIUS)
+      );
+    }
+    if (position == totalCount - COLUMNS) {
+      return const BorderRadius.only(
+          bottomLeft: Radius.circular(BORDER_RADIUS)
+      );
+    }
+    return const BorderRadius.all(Radius.zero);
+  }
 
   @override
   Widget build(BuildContext context) {
     BoxDecoration decoration = BoxDecoration(
       color: color,
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: _provideBorderRadius(),
     );
     return InkWell(
       child: Container(
