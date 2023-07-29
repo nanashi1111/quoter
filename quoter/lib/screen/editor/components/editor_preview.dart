@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,11 +27,7 @@ class EditorPreview extends StatelessWidget {
           height: size,
           padding: const EdgeInsets.all(20),
           child: TextField(
-            style: GoogleFonts.montserrat(
-              color: quoteEditor.textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-            ),
+            style: quoteEditor.textStyle.copyWith(color: quoteEditor.textColor, fontSize: 22, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.multiline,

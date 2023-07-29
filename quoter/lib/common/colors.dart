@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const Color tabBarColor = Color.fromRGBO(13, 29, 49, 1.0);
 const Color appBarColor = Colors.white;
@@ -28,6 +29,24 @@ List<Color> textColors = List.of([
   HexColor("#461959"),
   HexColor("#7A316F"),
   HexColor("#CD6688"),
+]);
+
+List<TextStyle> textStyles = List.of([
+  GoogleFonts.montserrat(fontWeight: FontWeight.w600),
+  GoogleFonts.bonheurRoyale(fontWeight: FontWeight.w600),
+  GoogleFonts.indieFlower(fontWeight: FontWeight.w600),
+  GoogleFonts.permanentMarker(fontWeight: FontWeight.w600),
+  GoogleFonts.lato(fontWeight: FontWeight.w600),
+  GoogleFonts.notoSans(fontWeight: FontWeight.w600),
+  GoogleFonts.ubuntu(fontWeight: FontWeight.w600),
+  GoogleFonts.eduSaBeginner(fontWeight: FontWeight.w600),
+  GoogleFonts.quicksand(fontWeight: FontWeight.w600),
+  GoogleFonts.dancingScript(fontWeight: FontWeight.w600),
+  GoogleFonts.rajdhani(fontWeight: FontWeight.w600),
+  GoogleFonts.vesperLibre(fontWeight: FontWeight.w600),
+  GoogleFonts.caveat(fontWeight: FontWeight.w600),
+  GoogleFonts.abrilFatface(fontWeight: FontWeight.w600),
+  GoogleFonts.shadowsIntoLight(fontWeight: FontWeight.w600),
 ]);
 
 

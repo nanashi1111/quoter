@@ -1,5 +1,6 @@
 part of 'editor_bloc.dart';
 
+
 abstract class EditorEvent extends Equatable {
   const EditorEvent();
 }
@@ -24,6 +25,14 @@ class ChangeTextEvent extends EditorEvent {
 
 }
 
+class ChangePatternEvent extends EditorEvent {
+  int position;
+  ChangePatternEvent({required this.position});
+
+  @override
+  List<Object?> get props => [position];
+}
+
 class ChangeTextColorEvent extends EditorEvent {
   Color color;
 
@@ -40,4 +49,14 @@ class ChangeBackgroundColorEvent extends EditorEvent {
 
   @override
   List<Object?> get props => [color];
+}
+
+class ChangeFontEvent extends EditorEvent {
+
+  var textStyle = GoogleFonts.montserrat(fontWeight: FontWeight.w600);
+
+  ChangeFontEvent({required this.textStyle});
+
+  @override
+  List<Object?> get props => [textStyle];
 }
