@@ -1,36 +1,24 @@
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:quoter/common/colors.dart';
+import 'package:quoter/repositories/entities/quote_editor_entity.dart';
+part 'quote_editor.freezed.dart';
 
-import '../common/colors.dart';
+@freezed
+class QuoteEditor with _$QuoteEditor {
+  const factory QuoteEditor({
+    required int id,
+    required String content,
+    required int backgroundPatternPos,
+    @Default(Color.fromRGBO(0, 0, 0, 0.5)) Color backgroundColor,
+    required TextStyle textStyle,
+    required String fontName
+  }) = _QuoteEditor;
+}
 
-class QuoteEditor extends Equatable {
-  String content = "";
-  Color textColor = Colors.white;
-  int backgroundPatternPos = 1;
-  Color backgroundColor = Colors.black.withOpacity(0.5);
-  TextStyle textStyle = textStyles.first;
-
-  QuoteEditor copy({String? content, Color? textColor, int? backgroundPatternPos, Color? backgroundColor, TextStyle? textStyle}) {
-    QuoteEditor result = QuoteEditor();
-    if (content != null) {
-      result.content = content;
-    }
-    if (textColor != null) {
-      result.textColor = textColor;
-    }
-    if (backgroundPatternPos != null) {
-      result.backgroundPatternPos = backgroundPatternPos;
-    }
-    if (backgroundColor != null) {
-      result.backgroundColor = backgroundColor;
-    }
-    if (textStyle != null) {
-      result.textStyle = textStyle;
-    }
-    return result;
+extension QuoteEditorMapper on QuoteEditor {
+  QuoteEditorEntity toEntity() {
+    return QuoteEditorEntity(id: id, content: content, backgroundPatternPosition: backgroundPatternPos, backgroundColor: backgroundColor.toHexString(), textSize: textStyle
+        .fontSize ?? 0, textColor: textStyle.color?.toHexString() ?? "#ffffff", font: fontName);
   }
-
-  @override
-  List<Object?> get props => [content, textColor, backgroundPatternPos, backgroundColor, textStyle];
 }

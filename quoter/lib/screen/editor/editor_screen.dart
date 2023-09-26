@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote.dart';
+import 'package:quoter/models/quote_editor.dart';
 import 'package:quoter/screen/editor/blocs/editor_bloc.dart';
 import 'package:quoter/screen/editor/blocs/editor_option_bloc.dart';
+import 'package:quoter/screen/editor/blocs/quote_bloc.dart';
 import 'package:quoter/screen/editor/components/editor_options.dart';
 import 'components/editor_preview.dart';
 
@@ -21,6 +23,7 @@ class EditorScreen extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => EditorBloc()..add(InitialEditorEvent(quote: quote, backgroundPatternPos: backgroundPatternPos))),
           BlocProvider(create: (_) => EditorOptionBloc()),
+          BlocProvider(create: (_) => QuoteBloc())
         ],
         child: Scaffold(
           appBar: AppBar(
@@ -39,18 +42,24 @@ class EditorScreen extends StatelessWidget {
             elevation: 0,
             backgroundColor: Colors.white,
             actions: [
-              GestureDetector(
-                  onTap: () {
-                    context.pop();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 10),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Done",
-                      style: GoogleFonts.montserrat(color: Colors.blue, fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                  ))
+              BlocBuilder<QuoteBloc, QuoteState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                      onTap: () {
+                        EditingState state = context.read<EditorBloc>().state as EditingState;
+                        QuoteEditor quoteEditor = state.quoteEditor;
+                        context.read<QuoteBloc>().add(SaveQuoteEvent(quoteEditor: quoteEditor));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Done",
+                          style: GoogleFonts.montserrat(color: Colors.blue, fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                      ));
+                },
+              )
             ],
           ),
           resizeToAvoidBottomInset: false,
@@ -88,7 +97,6 @@ class EditorScreen extends StatelessWidget {
   }
 
   Widget _provideEditorUI(EditorState state) {
-    print("Rebuild_Editor_UI: $state");
     if (state is EditingState) {
       return EditorPreview(quoteEditor: state.quoteEditor);
     } else {

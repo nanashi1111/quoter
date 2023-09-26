@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -31,6 +30,14 @@ List<Color> textColors = List.of([
   HexColor("#CD6688"),
 ]);
 
+TextStyle textStyleFromFontName(String fontName) {
+  int fontIndex = fontNames.indexOf(fontName);
+  if (fontIndex >= 0) {
+    return textStyles[fontIndex];
+  }
+  return textStyles.first;
+}
+
 List<TextStyle> textStyles = List.of([
   GoogleFonts.montserrat(fontWeight: FontWeight.w600),
   GoogleFonts.bonheurRoyale(fontWeight: FontWeight.w600),
@@ -49,6 +56,35 @@ List<TextStyle> textStyles = List.of([
   GoogleFonts.shadowsIntoLight(fontWeight: FontWeight.w600),
 ]);
 
+List<String> fontNames = List.of([
+  "montserrat",
+  "bonheurRoyale",
+  "indieFlower",
+  "permanentMarker",
+  "lato",
+  "notoSans",
+  "ubuntu",
+  "eduSaBeginner",
+  "quicksand",
+  "dancingScript",
+  "rajdhani",
+  "vesperLibre",
+  "caveat",
+  "abrilFatface",
+  "shadowsIntoLight"
+]);
+
+extension ColorToString on Color {
+  String toHexString() {
+    return value.toRadixString(16);
+  }
+}
+
+extension StringToColor on String {
+  Color toColor() {
+    return HexColor(this);
+  }
+}
 
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {

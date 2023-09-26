@@ -27,7 +27,7 @@ class EditorPreview extends StatelessWidget {
           height: size,
           padding: const EdgeInsets.all(20),
           child: TextField(
-            style: quoteEditor.textStyle.copyWith(color: quoteEditor.textColor, fontSize: 22, fontWeight: FontWeight.w600),
+            style: quoteEditor.textStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.multiline,

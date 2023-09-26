@@ -1,5 +1,7 @@
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:quoter/models/quote_editor.dart';
 import 'package:quoter/repositories/apis.dart';
 import 'package:quoter/repositories/base_repository.dart';
 import 'package:quoter/repositories/entities/category_entity.dart';
@@ -24,5 +26,11 @@ class QuoteRepository extends BaseRepository {
     } else {
       return List.empty();
     }
+  }
+
+  Future saveQuote(QuoteEditor quoteEditor) async {
+    await dataBaseManager.saveQuote(quoteEditor.toEntity());
+    int numberOfQuotes = (await dataBaseManager.getQuotes()).length;
+    debugPrint("numberOfQuotes = $numberOfQuotes");
   }
 }

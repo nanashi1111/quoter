@@ -18,6 +18,7 @@ class FontSelector extends StatelessWidget {
         itemBuilder: (context, position) {
           return FontSelectorItem(
             style: textStyles[position],
+            fontName: fontNames[position],
           );
         },
         shrinkWrap: true,
@@ -30,8 +31,9 @@ class FontSelector extends StatelessWidget {
 
 class FontSelectorItem extends StatelessWidget {
   TextStyle style;
+  String fontName;
 
-  FontSelectorItem({super.key, required this.style});
+  FontSelectorItem({super.key, required this.style, required this.fontName});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class FontSelectorItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        context.read<EditorBloc>().add(ChangeFontEvent(textStyle: style));
+        context.read<EditorBloc>().add(ChangeFontEvent(textStyle: style, fontName: fontName));
       },
     );
   }

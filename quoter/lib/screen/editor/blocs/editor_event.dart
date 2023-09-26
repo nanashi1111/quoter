@@ -53,10 +53,11 @@ class ChangeBackgroundColorEvent extends EditorEvent {
 
 class ChangeFontEvent extends EditorEvent {
 
-  var textStyle = GoogleFonts.montserrat(fontWeight: FontWeight.w600);
+  var textStyle = defaultTextStyle();
+  var fontName = defaultFontName();
 
-  ChangeFontEvent({required this.textStyle});
+  ChangeFontEvent({required this.textStyle, required this.fontName});
 
   @override
-  List<Object?> get props => [textStyle];
+  List<Object?> get props => [textStyle, fontName];
 }

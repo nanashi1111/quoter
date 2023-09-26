@@ -7,3 +7,4 @@ class SearchQuoteScreen extends StatelessWidget {
   }
 
 }
+

@@ -107,7 +107,7 @@ class PickColorSelectorItem extends StatelessWidget {
     EditorBloc editorBloc = context.read<EditorBloc>();
 
     if (selectedOption.type == TYPE_SELECT_TEXT_COLOR) {
-      return (editorBloc.state as EditingState).quoteEditor.textColor;
+      return (editorBloc.state as EditingState).quoteEditor.textStyle.color ?? Colors.white;
     } else if (selectedOption.type == TYPE_SELECT_BACKGROUND_COLOR) {
       return (editorBloc.state as EditingState).quoteEditor.backgroundColor;
     }
