@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/screen/exploer/explorer_screen.dart';
 import 'package:quoter/screen/home/blocs/home_bloc.dart';
+import 'package:quoter/screen/home/side_menu.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
 import 'package:quoter/screen/search/search_quote_screen.dart';
 import 'package:quoter/utils/admob_helper.dart';
@@ -28,7 +29,7 @@ class HomeScreenState extends State<HomeScreen> {
   late HomeBloc _bloc;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext homeContext) {
     return BlocProvider(
       create: (context) {
         _bloc = HomeBloc();
@@ -38,6 +39,7 @@ class HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           return Scaffold(
             extendBody: true,
+            drawer: SideMenu(),
             appBar: _provideAppBar(context),
             floatingActionButton: _provideFloatingActionButton(context),
             floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
@@ -61,19 +63,37 @@ class HomeScreenState extends State<HomeScreen> {
     return AppBar(
       backgroundColor: appBarColor,
       elevation: 0,
-      leading: GestureDetector(
-          onTap: () {
-            context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: SvgPicture.asset(
-              'assets/images/ic_quoter_search.svg',
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-              width: 45,
-              height: 45,
-            ),
-          )),
+
+      actions: [
+        GestureDetector(
+            onTap: () {
+              context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: SvgPicture.asset(
+                'assets/images/ic_quoter_search.svg',
+                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                width: 45,
+                height: 45,
+              ),
+            ))
+      ],
+      leading: Builder(builder: (context) {
+        return GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: SvgPicture.asset(
+                'assets/images/ic_menu.svg',
+                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                width: 45,
+                height: 45,
+              ),
+            ));
+      }),
     );
   }
 

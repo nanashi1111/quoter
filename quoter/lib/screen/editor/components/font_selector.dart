@@ -46,7 +46,8 @@ class FontSelectorItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        context.read<EditorBloc>().add(ChangeFontEvent(textStyle: style, fontName: fontName));
+
+        context.read<EditorBloc>().add(ChangeFontEvent(textStyle: style.copyWith(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600), fontName: fontName));
       },
     );
   }

@@ -19,9 +19,9 @@ class TextSizeSelector extends StatelessWidget {
             max: 100.0,
             value: _fontSize(state),
             onChanged: (value) {
-              TextStyle currentTextStyle = (state as EditingState).quoteEditor.textStyle.copyWith(fontSize: value);
+              TextStyle newTextStyle = (state as EditingState).quoteEditor.textStyle.copyWith(fontSize: value);
               String fontName = state.quoteEditor.fontName;
-              context.read<EditorBloc>().add(ChangeFontEvent(textStyle: currentTextStyle, fontName: fontName));
+              context.read<EditorBloc>().add(ChangeFontEvent(textStyle: newTextStyle, fontName: fontName));
             },
           ),),
           SizedBox(width: 20,),

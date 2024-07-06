@@ -1,5 +1,7 @@
 class QuoteData {
 
+  static List<String> categories = ["LOVE", "FRIENDSHIP", "MOTIVATION", "FAMILY", "LIFE", "HAPPINESS", "WOMEN", "MOTHER", "SAD", "FATHER", "POSITIVE", "ALONE", "TRUST", "FUNNY"];
+
   static List<String> getQuotesOfCategory(String category) {
     List<String>? quoteList;
     if (category.toUpperCase().contains("LOVE")) {
@@ -75,6 +77,14 @@ class QuoteData {
       }
     }
     return "";
+  }
+
+  static List<String> getAllQuotes(String query){
+      List<String> result = [];
+      categories.forEach((category) {
+          result.addAll(getQuotesOfCategory(category).where((quote) => quote.toUpperCase().contains(query.toUpperCase())));
+      });
+      return result;
   }
 
   static List<String> listLoveQuote = ["My night has become a sunny dawn because of you.",

@@ -66,6 +66,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
           EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundPatternPos: event.position, backgroundColor: Colors.transparent, backgroundImagePos: 0));
       emit(newState);
     });
+
     on<ChangeBackgroundImageEvent>((event, emitter) {
       QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
       EditingState newState =
