@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quoter/common/toast.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/models/quote_editor.dart';
@@ -9,6 +10,7 @@ import 'package:quoter/screen/editor/blocs/editor_bloc.dart';
 import 'package:quoter/screen/editor/blocs/editor_option_bloc.dart';
 import 'package:quoter/screen/editor/blocs/quote_bloc.dart';
 import 'package:quoter/screen/editor/components/editor_options.dart';
+import 'package:quoter/utils/admob_helper.dart';
 import 'components/editor_preview.dart';
 
 class EditorScreen extends StatelessWidget {
@@ -46,9 +48,13 @@ class EditorScreen extends StatelessWidget {
                 builder: (context, state) {
                   return GestureDetector(
                       onTap: () {
-                        EditingState state = context.read<EditorBloc>().state as EditingState;
-                        QuoteEditor quoteEditor = state.quoteEditor;
-                        context.read<QuoteBloc>().add(SaveQuoteEvent(quoteEditor: quoteEditor));
+                        AdmobHelper.instance.showInterAds(() {
+                          EditingState state = context.read<EditorBloc>().state as EditingState;
+                          QuoteEditor quoteEditor = state.quoteEditor;
+                          context.read<QuoteBloc>().add(SaveQuoteEvent(quoteEditor: quoteEditor));
+                          showToast(context, "Your quote is saved");
+                          context.pop();
+                        });
                       },
                       child: Container(
                         padding: const EdgeInsets.only(right: 10),

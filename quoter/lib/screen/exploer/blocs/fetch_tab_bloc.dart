@@ -15,7 +15,8 @@ class FetchTabBloc extends Bloc<TabEvent, TabState> {
 
     on<FetchTabEvent>((event, emitter) async {
       emit(FetchingTabs());
-      List<QuoteCategory> categories = (await repository.getCatgories()).where((element) => element.quoteCount != null && element.quoteCount! > 20)
+      List<QuoteCategory> categories = (await repository.getCatgories())
+          //.where((element) => element.quoteCount != null && element.quoteCount! > 20)
           .map((e) => QuoteCategory(title: e.name?.toUpperCase() ?? "", selected: false))
           .toList();
       if (categories.isNotEmpty) {

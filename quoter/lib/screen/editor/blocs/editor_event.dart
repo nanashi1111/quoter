@@ -33,6 +33,14 @@ class ChangePatternEvent extends EditorEvent {
   List<Object?> get props => [position];
 }
 
+class ChangeBackgroundImageEvent extends EditorEvent {
+  int position;
+  ChangeBackgroundImageEvent({required this.position});
+
+  @override
+  List<Object?> get props => [position];
+}
+
 class ChangeTextColorEvent extends EditorEvent {
   Color color;
 

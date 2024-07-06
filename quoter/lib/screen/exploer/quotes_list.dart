@@ -10,6 +10,7 @@ import 'package:quoter/models/quote_category.dart';
 import 'package:quoter/screen/exploer/blocs/fetch_quote_bloc.dart';
 import 'package:quoter/screen/loading/list_loading_footer.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
+import 'package:quoter/utils/admob_helper.dart';
 
 class QuotesList extends StatefulWidget {
   QuoteCategory category;
@@ -68,9 +69,11 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
                   pos: 1 + pos % 6,
                   content: quote,
                   callback: () {
-                    Map<String, String> pathParameters = <String, String>{}
-                      ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
-                    context.pushNamed("editor", pathParameters: pathParameters);
+                    AdmobHelper.instance.showInterAds((){
+                      Map<String, String> pathParameters = <String, String>{}
+                        ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
+                      context.pushNamed("editor", pathParameters: pathParameters);
+                    });
                   },
                 );
               }

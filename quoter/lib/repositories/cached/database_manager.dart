@@ -28,6 +28,7 @@ class DataBaseManager {
     rawResult.forEach((element) {
       result.add(QuoteEditorEntity(id: int.parse("${element["id"]}"), content: element["content"], backgroundPatternPosition: int.parse("${element["backgroundPatternPosition"]}"),
           backgroundColor: element["backgroundColor"],
+          backgroundImagePosition: int.parse("${element["backgroundImagePosition"]}"),
           textSize: double.parse("${element["textSize"]}"), textColor: element["textColor"], font: element["font"]));
     });
     return result;

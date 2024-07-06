@@ -9,6 +9,7 @@ import 'package:quoter/screen/exploer/explorer_screen.dart';
 import 'package:quoter/screen/home/blocs/home_bloc.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
 import 'package:quoter/screen/search/search_quote_screen.dart';
+import 'package:quoter/utils/admob_helper.dart';
 
 import '../../common/colors.dart';
 
@@ -86,8 +87,10 @@ class HomeScreenState extends State<HomeScreen> {
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40.0))),
             backgroundColor: Colors.white,
             onPressed: () {
-              Map<String, String> params = {}..addEntries(List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")]));
-              context.pushNamed("editor", pathParameters: params);
+              AdmobHelper.instance.showInterAds(() {
+                Map<String, String> params = {}..addEntries(List.of([MapEntry("quote", jsonEncode(const Quote(content: ""))), const MapEntry("backgroundPatternPos", "1")]));
+                context.pushNamed("editor", pathParameters: params);
+              });
             },
             child: SvgPicture.asset(
               'assets/images/ic_quoter_plus.svg',

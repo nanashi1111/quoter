@@ -16,10 +16,12 @@ class EditorPreview extends StatelessWidget {
     double size = MediaQuery.of(context).size.width * 0.9;
     _controller.text = quoteEditor.content;
     _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
+    double fontSize = (quoteEditor.textStyle.fontSize == 0 ? 22 : quoteEditor.textStyle.fontSize)?.toDouble() ?? 0;
     return Stack(
       children: [
         _providePatternBackground(size),
         _provideColorBackground(size),
+        _provideImageBackground(size),
         Container(
           color: Colors.transparent,
           alignment: Alignment.center,
@@ -27,7 +29,7 @@ class EditorPreview extends StatelessWidget {
           height: size,
           padding: const EdgeInsets.all(20),
           child: TextField(
-            style: quoteEditor.textStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
+            style: quoteEditor.textStyle.copyWith(fontSize: fontSize, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.multiline,
@@ -63,8 +65,25 @@ class EditorPreview extends StatelessWidget {
       );
     }
     return SizedBox(
-      width: size,
-      height: size,
+      width: 1,
+      height: 1,
+    );
+  }
+  Widget _provideImageBackground(double size) {
+    if (quoteEditor.backgroundImagePos > 0) {
+      String path = "assets/images/bg_${quoteEditor.backgroundImagePos.toString().padLeft(2, '0')}.jpg";
+      return Image(
+        image: AssetImage(
+          path,
+        ),
+        fit: BoxFit.cover,
+        width: size,
+        height: size,
+      );
+    }
+    return SizedBox(
+      width: 1,
+      height: 1,
     );
   }
 }

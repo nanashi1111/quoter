@@ -12,6 +12,7 @@ class QuoteEditorEntity with _$QuoteEditorEntity {
       {required int id,
       required String content,
       required int backgroundPatternPosition,
+        required int backgroundImagePosition,
       required String backgroundColor,
       required double textSize,
       required String textColor,
@@ -24,6 +25,7 @@ extension QuoteEditorEntityToModel on QuoteEditorEntity {
         id: id,
         content: content,
         backgroundPatternPos: backgroundPatternPosition,
+        backgroundImagePos: backgroundImagePosition,
         backgroundColor: backgroundColor.toColor(),
         textStyle: textStyleFromFontName(font).copyWith(color: textColor.toColor(), fontSize: textSize),
         fontName: font);
@@ -34,6 +36,7 @@ extension QuoteEditorEntityToModel on QuoteEditorEntity {
     result["id"] = id;
     result["content"] = content;
     result["backgroundPatternPosition"] = backgroundPatternPosition;
+    result["backgroundImagePosition"] = backgroundImagePosition;
     result["backgroundColor"] = backgroundColor;
     result["textSize"] = textSize;
     result["textColor"] = textColor;

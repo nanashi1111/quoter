@@ -10,6 +10,7 @@ class QuoteEditor with _$QuoteEditor {
     required int id,
     required String content,
     required int backgroundPatternPos,
+    required int backgroundImagePos,
     @Default(Color.fromRGBO(0, 0, 0, 0.5)) Color backgroundColor,
     required TextStyle textStyle,
     required String fontName
@@ -19,6 +20,6 @@ class QuoteEditor with _$QuoteEditor {
 extension QuoteEditorMapper on QuoteEditor {
   QuoteEditorEntity toEntity() {
     return QuoteEditorEntity(id: id, content: content, backgroundPatternPosition: backgroundPatternPos, backgroundColor: backgroundColor.toHexString(), textSize: textStyle
-        .fontSize ?? 0, textColor: textStyle.color?.toHexString() ?? "#ffffff", font: fontName);
+        .fontSize ?? 0, textColor: textStyle.color?.toHexString() ?? "#ffffff", font: fontName, backgroundImagePosition: backgroundImagePos);
   }
 }

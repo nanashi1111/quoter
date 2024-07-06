@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/views.dart';
@@ -21,6 +22,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
           id: DateTime.now().millisecondsSinceEpoch,
           content: quote.content ?? "",
           backgroundPatternPos: event.backgroundPatternPos,
+          backgroundImagePos: 0,
           textStyle: defaultTextStyle(),
           fontName: defaultFontName());
       emit(EditingState(quoteEditor: quoteEditor));
@@ -46,7 +48,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       if (state is EditingState) {
         QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
         debugPrint("SelectedColor: ${event.color.toHexString()}");
-        EditingState newState = EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundColor: event.color));
+        EditingState newState = EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundColor: event.color, backgroundImagePos: 0, backgroundPatternPos: 0));
         emit(newState);
       }
     });
@@ -60,7 +62,14 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
     on<ChangePatternEvent>((event, emitter) {
       QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
-      EditingState newState = EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundPatternPos: event.position));
+      EditingState newState =
+          EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundPatternPos: event.position, backgroundColor: Colors.transparent, backgroundImagePos: 0));
+      emit(newState);
+    });
+    on<ChangeBackgroundImageEvent>((event, emitter) {
+      QuoteEditor currentQuoteEditor = (state as EditingState).quoteEditor;
+      EditingState newState =
+          EditingState(quoteEditor: currentQuoteEditor.copyWith(backgroundImagePos: event.position, backgroundColor: Colors.transparent, backgroundPatternPos: 0));
       emit(newState);
     });
   }

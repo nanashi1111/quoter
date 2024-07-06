@@ -43,6 +43,10 @@ dependencies:
   google_fonts: ^5.1.0
   flutter_colorpicker: ^1.0.3
   sqflite: ^2.3.0
+  google_mobile_ads: 4.0.0
+  shared_preferences: ^2.2.2
+  #toastification: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +56,10 @@ dev_dependencies:
   json_serializable: ^6.3.1
 
   flutter_lints: ^2.0.0
+
+dependency_overrides:
+  flutter_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
