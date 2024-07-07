@@ -39,7 +39,7 @@ class HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           return Scaffold(
             extendBody: true,
-            drawer: SideMenu(),
+            drawer: const SideMenu(),
             appBar: _provideAppBar(context),
             floatingActionButton: _provideFloatingActionButton(context),
             floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,

@@ -27,6 +27,12 @@ import Flutter
                   controller.present(activityViewController, animated: true, completion: nil)
                       }
               break
+          case "showPrivacy":
+              let address = call.arguments as! String
+              if let url = URL(string: address) {
+                      UIApplication.shared.open(url)
+                  }
+              break
           default:
               break
           }

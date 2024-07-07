@@ -5,6 +5,7 @@ import 'package:quoter/repositories/apis.dart';
 import 'package:quoter/repositories/base_repository.dart';
 import 'package:quoter/repositories/cached/quote_data.dart';
 import 'package:quoter/repositories/entities/category_entity.dart';
+import 'package:quoter/repositories/entities/quote_editor_entity.dart';
 import 'package:quoter/repositories/entities/quote_entity.dart';
 import 'dart:convert';
 
@@ -57,5 +58,9 @@ class QuoteRepository extends BaseRepository {
     await dataBaseManager.saveQuote(quoteEditor.toEntity());
     int numberOfQuotes = (await dataBaseManager.getQuotes()).length;
     debugPrint("numberOfQuotes = $numberOfQuotes");
+  }
+
+  Future<List<QuoteEditor>> getMyQuotes() async {
+    return (await dataBaseManager.getQuotes()).map((e) => e.toModel()).toList();
   }
 }

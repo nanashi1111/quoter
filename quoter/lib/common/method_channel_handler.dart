@@ -8,6 +8,7 @@ class MethodChannelHandler {
 
   static const channel = "com.quoter";
   static const shareFile = "shareFile";
+  static const showPrivacy = "showPrivacy";
 
 
   final MethodChannel _platform = const MethodChannel(channel);
