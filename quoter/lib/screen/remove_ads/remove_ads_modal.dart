@@ -4,7 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/models/remove_ads_model.dart';
 
 class RemoveAdsModal extends StatelessWidget {
-  const RemoveAdsModal({super.key});
+
+  final Function onRemoveAds1Month;
+  final Function onRemoveAds2Months;
+  final Function onRemoveAds6Months;
+  final Function onRemoveAdsForever;
+
+  const RemoveAdsModal({super.key, required this.onRemoveAds1Month, required this.onRemoveAds2Months, required this.onRemoveAds6Months, required this.onRemoveAdsForever});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +24,16 @@ class RemoveAdsModal extends StatelessWidget {
           child: Text("Remove ads options", style: GoogleFonts.montserrat(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
         ),
         RemoveAdsItem(model: RemoveAdsModel(title: "For 1 month", price: 15), onSelected: (){
-
+          onRemoveAds1Month();
         }),
         RemoveAdsItem(model: RemoveAdsModel(title: "For 2 months", price: 20), onSelected: (){
-
+          onRemoveAds2Months();
         }),
         RemoveAdsItem(model: RemoveAdsModel(title: "For 6 months", price: 50), onSelected: (){
-
+          onRemoveAds6Months();
         }),
         RemoveAdsItem(model: RemoveAdsModel(title: "Forever", price: 100), onSelected: (){
-
+          onRemoveAdsForever();
         }),
       ],
     );

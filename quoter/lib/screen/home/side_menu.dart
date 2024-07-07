@@ -21,12 +21,16 @@ class SideMenu extends StatelessWidget {
           children: [
             Expanded(
                 child: ListView(
-                  children: [
-                    SideMenuHeader(),
-                    SideMenuItem(model: SideMenuModel(icon: 'assets/images/ic_my_quotes.svg', title: 'My quotes'), onClick: () {
+              children: [
+                SideMenuHeader(),
+                SideMenuItem(
+                    model: SideMenuModel(icon: 'assets/images/ic_my_quotes.svg', title: 'My quotes'),
+                    onClick: () {
                       context.pushNamed("my_quotes");
                     }),
-                    SideMenuItem(model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'), onClick: () {
+                SideMenuItem(
+                    model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
+                    onClick: () {
                       showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -34,14 +38,23 @@ class SideMenu extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           builder: (context) {
-                            return const SingleChildScrollView(child: RemoveAdsModal(),);
+                            return SingleChildScrollView(
+                              child: RemoveAdsModal(
+                                onRemoveAds1Month: () {},
+                                onRemoveAds2Months: () {},
+                                onRemoveAds6Months: () {},
+                                onRemoveAdsForever: () {},
+                              ),
+                            );
                           });
                     }),
-                    SideMenuItem(model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'), onClick: () {
+                SideMenuItem(
+                    model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'),
+                    onClick: () {
                       MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.showPrivacy, data: "https://cungdev.com/quote-creator-privacy-policy/");
                     })
-                  ],
-                )),
+              ],
+            )),
             const SideMenuVersion()
           ],
         ));
