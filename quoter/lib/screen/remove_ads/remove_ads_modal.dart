@@ -14,7 +14,7 @@ class RemoveAdsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SafeArea(child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
@@ -36,7 +36,7 @@ class RemoveAdsModal extends StatelessWidget {
           onRemoveAdsForever();
         }),
       ],
-    );
+    ));
   }
 }
 
