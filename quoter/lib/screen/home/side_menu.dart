@@ -40,10 +40,18 @@ class SideMenu extends StatelessWidget {
                           builder: (context) {
                             return SingleChildScrollView(
                               child: RemoveAdsModal(
-                                onRemoveAds1Month: () {},
-                                onRemoveAds2Months: () {},
-                                onRemoveAds6Months: () {},
-                                onRemoveAdsForever: () {},
+                                onRemoveAds1Month: () {
+                                  MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
+                                },
+                                onRemoveAds2Months: () {
+                                  MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
+                                },
+                                onRemoveAds6Months: () {
+                                  MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
+                                },
+                                onRemoveAdsForever: () {
+                                  MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
+                                },
                               ),
                             );
                           });

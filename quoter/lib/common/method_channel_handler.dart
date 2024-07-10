@@ -9,7 +9,10 @@ class MethodChannelHandler {
   static const channel = "com.quoter";
   static const shareFile = "shareFile";
   static const showPrivacy = "showPrivacy";
-
+  static const removeAdsForever = "removeAdsForever";
+  static const removeAds1Month = "removeAds1Month";
+  static const removeAds2Months = "removeAds2Months";
+  static const removeAds6Months = "removeAds6Months";
 
   final MethodChannel _platform = const MethodChannel(channel);
 
