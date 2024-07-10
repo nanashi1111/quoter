@@ -46,6 +46,7 @@ dependencies:
   google_mobile_ads: 4.0.0
   shared_preferences: ^2.2.2
   toastification: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -53,12 +54,16 @@ dev_dependencies:
   freezed: ^2.4.1
   build_runner: ^2.4.6
   json_serializable: ^6.3.1
-
   flutter_lints: ^2.0.0
 
 dependency_overrides:
   flutter_test:
     sdk: flutter
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true
