@@ -11,6 +11,7 @@ class AdsRepository {
 
   final String _keyAdsEnabled = "ads_enable";
   final String _lastTimeShowAds = "last_time_show_ads";
+  final String _purchaseRestored = "purchase_restored";
 
   Future<bool> isAdsEnabled() async {
     return (await _prefs).getBool(_keyAdsEnabled) ?? true;
@@ -26,5 +27,13 @@ class AdsRepository {
 
   Future setLastTimeShowAds() async {
     (await _prefs).setInt(_lastTimeShowAds, DateTime.now().millisecondsSinceEpoch);
+  }
+
+  Future<bool> isPurchaseRestored() async {
+    return (await _prefs).getBool(_purchaseRestored) ?? false;
+  }
+
+  Future setPurchaseRestored(bool restored) async {
+    (await _prefs).setBool(_purchaseRestored, restored);
   }
 }

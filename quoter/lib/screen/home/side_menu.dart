@@ -17,7 +17,7 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SideMenuBloc>(
-      create: (context) => SideMenuBloc()..add(const SideMenuEvent.getPurchaseInfo()),
+      create: (context) => SideMenuBloc()..add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: false)),
       child: BlocBuilder<SideMenuBloc, SideMenuState>(
         builder: (context, state) {
           return Container(
@@ -49,7 +49,7 @@ class SideMenu extends StatelessWidget {
               onClick: () {
                 context.pushNamed("my_quotes");
               }),
-          Visibility(visible: state.purchased,child: SideMenuItem(
+          Visibility(visible: state.purchased && !state.restored,child: SideMenuItem(
             model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Restore purchases'),
             onClick: () async {
               bool restoredSuccess = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
@@ -59,11 +59,12 @@ class SideMenu extends StatelessWidget {
               } else {
                 showToast(context, "Something failed, please try again later");
               }
-              context.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo());
+              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: restoredSuccess));
+
             },
           ),),
           Visibility(
-            visible: !state.purchased,
+            visible: !state.purchased && !state.restored,
             child: SideMenuItem(
                 model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
                 onClick: () {
@@ -80,37 +81,41 @@ class SideMenu extends StatelessWidget {
                               bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                               if (purchased) {
                                 showToast(context, "You have paid for 1 month ads free");
-                                context.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo());
                               } else {
                                 showToast(context, "Something failed, please try again later");
                               }
+                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+
                             },
                             onRemoveAds2Months: () async {
                               bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
                               if (purchased) {
                                 showToast(context, "You have paid for 2 months ads free");
-                                context.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo());
                               } else {
                                 showToast(context, "Something failed, please try again later");
                               }
+                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+
                             },
                             onRemoveAds6Months: () async {
                               bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
                               if (purchased) {
                                 showToast(context, "You have paid for 6 months ads free");
-                                context.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo());
                               } else {
                                 showToast(context, "Something failed, please try again later");
                               }
+                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+
                             },
                             onRemoveAdsForever: () async {
                               bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
                               if (purchased) {
                                 showToast(context, "You have paid for ads free");
-                                context.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo());
                               } else {
                                 showToast(context, "Something failed, please try again later");
                               }
+                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+
                             },
                           ),
                         );
