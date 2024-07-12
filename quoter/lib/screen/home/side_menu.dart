@@ -1,135 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quoter/common/loading_view.dart';
 import 'package:quoter/common/method_channel_handler.dart';
-import 'package:quoter/common/toast.dart';
 import 'package:quoter/models/side_menu_model.dart';
-import 'package:quoter/screen/home/blocs/side_menu_bloc.dart';
 import 'package:quoter/screen/home/side_menu_header.dart';
 import 'package:quoter/screen/home/side_menu_item.dart';
 import 'package:quoter/screen/home/side_menu_version.dart';
 import 'package:quoter/screen/remove_ads/remove_ads_modal.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({super.key});
+
+  final Function onRemoveAds1Month;
+  final Function onRemoveAds2Month;
+  final Function onRemoveAds6Month;
+  final Function onRemoveAdsForever;
+  final Function onRestoreAds;
+
+  final bool purchased;
+  final bool restored;
+  final bool loading;
+
+  const SideMenu({super.key, required this.onRemoveAds1Month, required this.onRemoveAds2Month, required this.onRemoveAds6Month, required this.onRemoveAdsForever, required this.onRestoreAds, required this.purchased, required this.restored, required this.loading});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SideMenuBloc>(
-      create: (context) => SideMenuBloc()..add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: false)),
-      child: BlocBuilder<SideMenuBloc, SideMenuState>(
-        builder: (context, state) {
-          return Container(
-              width: MediaQuery.sizeOf(context).width * 0.65,
-              color: Colors.white,
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: _provideSideMenu(context, state)),
-                  const SideMenuVersion()
-                ],
-              ));
-        },
-      ),
-    );
+    return Container(
+        width: MediaQuery.sizeOf(context).width * 0.65,
+        color: Colors.white,
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+                child: loading ? LoadingView(): ListView(
+                  children: [
+                    SideMenuHeader(),
+                    SideMenuItem(
+                        model: SideMenuModel(icon: 'assets/images/ic_my_quotes.svg', title: 'My quotes'),
+                        onClick: () {
+                          context.pushNamed("my_quotes");
+                        }),
+                    Visibility(visible: purchased && !restored,child: SideMenuItem(
+                      model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Restore purchases'),
+                      onClick: () async {
+                        onRestoreAds();
+                      },
+                    ),),
+                    Visibility(
+                      visible: !purchased && !restored,
+                      child: SideMenuItem(
+                          model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
+                          onClick: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                builder: (modalContext) {
+                                  return SingleChildScrollView(
+                                    child: RemoveAdsModal(
+                                      onRemoveAds1Month: ()  {
+                                        onRemoveAds1Month();
+                                      },
+                                      onRemoveAds2Months: ()  {
+                                        onRemoveAds2Month();
+                                      },
+                                      onRemoveAds6Months: ()  {
+                                        onRemoveAds6Month();
+                                      },
+                                      onRemoveAdsForever: ()  {
+                                        onRemoveAdsForever();
+                                      },
+                                    ),
+                                  );
+                                });
+                          }),
+                    ),
+                    SideMenuItem(
+                        model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'),
+                        onClick: () {
+                          MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.showPrivacy, data: "https://cungdev.com/quote-creator-privacy-policy/");
+                        })
+                  ],
+                )),
+            const SideMenuVersion()
+          ],
+        ));
   }
 
-  Widget _provideSideMenu(BuildContext context, SideMenuState state) {
-    if (state.loading) {
-      return LoadingView();
-    } else {
-      return ListView(
-        children: [
-          SideMenuHeader(),
-          SideMenuItem(
-              model: SideMenuModel(icon: 'assets/images/ic_my_quotes.svg', title: 'My quotes'),
-              onClick: () {
-                context.pushNamed("my_quotes");
-              }),
-          Visibility(visible: state.purchased && !state.restored,child: SideMenuItem(
-            model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Restore purchases'),
-            onClick: () async {
-              bool restoredSuccess = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
-              debugPrint("RestoredResult: $restoredSuccess");
-              if (restoredSuccess) {
-                showToast(context, "You have restored purchases");
-              } else {
-                showToast(context, "Something failed, please try again later");
-              }
-              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: restoredSuccess));
-
-            },
-          ),),
-          Visibility(
-            visible: !state.purchased && !state.restored,
-            child: SideMenuItem(
-                model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
-                onClick: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      builder: (context) {
-                        return SingleChildScrollView(
-                          child: RemoveAdsModal(
-                            onRemoveAds1Month: () async {
-                              bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
-                              if (purchased) {
-                                showToast(context, "You have paid for 1 month ads free");
-                              } else {
-                                showToast(context, "Something failed, please try again later");
-                              }
-                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-
-                            },
-                            onRemoveAds2Months: () async {
-                              bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
-                              if (purchased) {
-                                showToast(context, "You have paid for 2 months ads free");
-                              } else {
-                                showToast(context, "Something failed, please try again later");
-                              }
-                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-
-                            },
-                            onRemoveAds6Months: () async {
-                              bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
-                              if (purchased) {
-                                showToast(context, "You have paid for 6 months ads free");
-                              } else {
-                                showToast(context, "Something failed, please try again later");
-                              }
-                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-
-                            },
-                            onRemoveAdsForever: () async {
-                              bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
-                              if (purchased) {
-                                showToast(context, "You have paid for ads free");
-                              } else {
-                                showToast(context, "Something failed, please try again later");
-                              }
-                              context.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-
-                            },
-                          ),
-                        );
-                      });
-                }),
-          ),
-          SideMenuItem(
-              model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'),
-              onClick: () {
-                MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.showPrivacy, data: "https://cungdev.com/quote-creator-privacy-policy/");
-              })
-        ],
-      );
-    }
-
-  }
 }

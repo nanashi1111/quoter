@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quoter/common/method_channel_handler.dart';
+import 'package:quoter/common/toast.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/screen/exploer/explorer_screen.dart';
 import 'package:quoter/screen/home/blocs/home_bloc.dart';
+import 'package:quoter/screen/home/blocs/side_menu_bloc.dart';
 import 'package:quoter/screen/home/side_menu.dart';
 import 'package:quoter/screen/loading/loading_screen.dart';
 import 'package:quoter/screen/search/search_quote_screen.dart';
@@ -26,29 +29,70 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _homePages = <Widget>[const ExplorerScreen(), SearchQuoteScreen()];
 
-  late HomeBloc _bloc;
-
   @override
   Widget build(BuildContext homeContext) {
-    return BlocProvider(
-      create: (context) {
-        _bloc = HomeBloc();
-        return _bloc;
-      },
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
-            extendBody: true,
-            drawer: const SideMenu(),
-            appBar: _provideAppBar(context),
-            floatingActionButton: _provideFloatingActionButton(context),
-            floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-            bottomNavigationBar: _provideBottomNavigationBar(context, state),
-            body: _provideContent(state),
-          );
-        },
-      ),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(create: (context) => SideMenuBloc()..add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: false))),
+        ],
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (homeContext, homeState) {
+            return BlocBuilder<SideMenuBloc, SideMenuState>(builder: (sideMenuContext, sideMenuState) {
+              return Scaffold(
+                extendBody: true,
+                drawer: SideMenu(
+                  onRemoveAdsForever: () async{
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
+                    if (purchased) {
+                      showToast(sideMenuContext, "You have purchased for ads free");
+                    }
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+                  },
+                  onRemoveAds1Month: () async {
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
+                    if (purchased) {
+                      showToast(sideMenuContext, "You have purchased for 1 month ads free");
+                    }
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+                  },
+                  onRemoveAds2Month: () async{
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
+                    if (purchased) {
+                      showToast(sideMenuContext, "You have purchased for 2 months ads free");
+                    }
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+                  },
+                  onRemoveAds6Month: () async{
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
+                    if (purchased) {
+                      showToast(sideMenuContext, "You have purchased for 6 months ads free");
+                    } 
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
+                  },
+                  onRestoreAds: () async{
+                    bool restoredSuccess = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
+                    if (restoredSuccess) {
+                      showToast(sideMenuContext, "You have restored purchases");
+                    } else {
+                      showToast(sideMenuContext, "Something failed, please try again later");
+                    }
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: restoredSuccess));
+                  },
+                  loading: sideMenuState.loading,
+                  restored: sideMenuState.restored,
+                  purchased: sideMenuState.purchased,
+                ),
+                appBar: _provideAppBar(homeContext),
+                floatingActionButton: _provideFloatingActionButton(homeContext),
+                floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+                bottomNavigationBar: _provideBottomNavigationBar(homeContext, homeState),
+                body: _provideContent(homeState),
+              );
+            });
+
+          },
+        ));
   }
 
   Color _provideTabBarItemColor(int position, int selectedPosition) {
@@ -63,7 +107,6 @@ class HomeScreenState extends State<HomeScreen> {
     return AppBar(
       backgroundColor: appBarColor,
       elevation: 0,
-
       actions: [
         GestureDetector(
             onTap: () {
