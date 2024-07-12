@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
+import 'package:quoter/common/empty_view.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/screen/exploer/quotes_list.dart';
@@ -74,33 +75,38 @@ class SearchQuoteScreen extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                      child: Container(
-                        child: ListView.separated(
-                          itemBuilder: (context, pos) {
-                            int quoteCount = state.quotes.length;
-                            Quote quote = state.quotes[pos];
-                            return QuoteItem(
-                              pos: 1 + pos % 6,
-                              content: quote,
-                              callback: () {
-                                AdmobHelper.instance.showInterAds(() {
-                                  Map<String, String> pathParameters = <String, String>{}
-                                    ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
-                                  context.pushNamed("editor", pathParameters: pathParameters);
-                                });
-                              },
-                            );
-                          },
-                          separatorBuilder: (context, pos) {
-                            return verticalSpacing(10);
-                          },
-                          itemCount: state.quotes.length,
-                        ),
-                      ))
+                      child: _provideContent(state))
                 ],
               ));
         },
       ),
     );
+  }
+  
+  Widget _provideContent(SearchQuoteState state) {
+    if (state.quotes.isNotEmpty) {
+      return ListView.separated(
+        itemBuilder: (context, pos) {
+          Quote quote = state.quotes[pos];
+          return QuoteItem(
+            pos: 1 + pos % 6,
+            content: quote,
+            callback: () {
+              AdmobHelper.instance.showInterAds(() {
+                Map<String, String> pathParameters = <String, String>{}
+                  ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
+                context.pushNamed("editor", pathParameters: pathParameters);
+              });
+            },
+          );
+        },
+        separatorBuilder: (context, pos) {
+          return verticalSpacing(10);
+        },
+        itemCount: state.quotes.length,
+      );
+    } else {
+      return EmptyView();
+    }
   }
 }

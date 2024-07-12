@@ -46,18 +46,37 @@ import StoreKit
           case "removeAdsForever":
               guard let product = self.store.products.first(where: { $0.productIdentifier == "com.nanashi1111.quoter.all" }) else { return }
               self.store.buyProduct(product)
+              //Todo check if purchase success
+              result(true)
               break
           case "removeAds1Month":
               guard let product = self.store.products.first(where: { $0.productIdentifier == "com.nanashi1111.quoter.sub.1month" }) else { return }
               self.store.buyProduct(product)
+              //Todo check if purchase success
+              result(true)
               break
           case "removeAds2Months":
               guard let product = self.store.products.first(where: { $0.productIdentifier == "com.nanashi1111.quoter.sub.2month" }) else { return }
               self.store.buyProduct(product)
+              //Todo check if purchase success
+              result(true)
               break
           case "removeAds6Months":
               guard let product = self.store.products.first(where: { $0.productIdentifier == "com.nanashi1111.quoter.sub.6month" }) else { return }
               self.store.buyProduct(product)
+              //Todo check if purchase success
+              result(true)
+              break
+          case "getPurchasedProduct":
+              //Todo: Get real data
+              let purchasedProduct = "com.nanashi1111.quoter.sub.2month"
+              result(purchasedProduct)
+              break
+              
+          case "restoreProduct":
+              // Todo: restore product
+              let restoredSuccess = true
+              result(restoredSuccess)
               break
           default:
               break

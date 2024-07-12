@@ -14,6 +14,9 @@ class MethodChannelHandler {
   static const removeAds2Months = "removeAds2Months";
   static const removeAds6Months = "removeAds6Months";
 
+  static const getPurchasedProduct = "getPurchasedProduct";
+  static const restoreProduct = "restoreProduct";
+
   final MethodChannel _platform = const MethodChannel(channel);
 
   Future<dynamic> invokeMethod(String method, {Object? data}) async {

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
+import 'package:quoter/common/empty_view.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote.dart';
 import 'package:quoter/models/quote_editor.dart';
@@ -49,30 +50,36 @@ class MyQuotesScreen extends StatelessWidget {
           create: (context) => MyQuotesBloc()..add(const MyQuotesEvent.started()),
           child: BlocBuilder<MyQuotesBloc, MyQuotesState>(
             builder: (context, state) {
-              return ListView.separated(
-                itemBuilder: (context, pos) {
-                  double size = MediaQuery.of(context).size.width * 0.9;
+              int numberOfQuotes = state.quotes.length;
+              if (numberOfQuotes > 0) {
+                return ListView.separated(
+                  itemBuilder: (context, pos) {
+                    double size = MediaQuery.of(context).size.width * 0.9;
 
-                  QuoteEditor quote = state.quotes[pos];
-                  return MyQuoteItem(
-                    size: size,
-                    content: quote,
-                    callback: () {
-                      // AdmobHelper.instance.showInterAds(() {
-                      //   QuoteEditor quote = state.quotes[pos];
-                      //   String quoteContent = jsonEncode(Quote(content: quote.content));
-                      //   int patternPos = quote.backgroundPatternPos;
-                      //   int imagePos = quote.backgroundImagePos;
-                      //
-                      // });
-                    },
-                  );
-                },
-                separatorBuilder: (context, pos) {
-                  return verticalSpacing(10);
-                },
-                itemCount: state.quotes.length,
-              );
+                    QuoteEditor quote = state.quotes[pos];
+                    return MyQuoteItem(
+                      size: size,
+                      content: quote,
+                      callback: () {
+                        // AdmobHelper.instance.showInterAds(() {
+                        //   QuoteEditor quote = state.quotes[pos];
+                        //   String quoteContent = jsonEncode(Quote(content: quote.content));
+                        //   int patternPos = quote.backgroundPatternPos;
+                        //   int imagePos = quote.backgroundImagePos;
+                        //
+                        // });
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, pos) {
+                    return verticalSpacing(10);
+                  },
+                  itemCount: state.quotes.length,
+                );
+              } else {
+                return EmptyView();
+              }
+
             },
           ),
         ),
