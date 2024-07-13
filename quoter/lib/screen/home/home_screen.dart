@@ -72,13 +72,9 @@ class HomeScreenState extends State<HomeScreen> {
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRestoreAds: () async{
-                    bool restoredSuccess = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
-                    if (restoredSuccess) {
-                      showInformationDialog(sideMenuContext, "Restored", "You have restored purchases");
-                    } else {
-                      showInformationDialog(sideMenuContext, "Restored", "Something failed, please try again later");
-                    }
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: restoredSuccess));
+                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.restore());
+                    await Future.delayed(Duration(seconds: 1));
+                    showInformationDialog(sideMenuContext, "Restored", "You have restored purchases");
                   },
                   loading: sideMenuState.loading,
                   restored: sideMenuState.restored,

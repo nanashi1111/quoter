@@ -21,5 +21,10 @@ class SideMenuBloc extends Bloc<SideMenuEvent, SideMenuState> {
       debugPrint("purchasedProduct: $purchasedProduct ; restored: $restored");
       emit(state.copyWith(purchased: purchasedProduct, restored: restored, loading: false));
     });
+
+    on<_Restore>((event, emit) async {
+      emit(state.copyWith(loading: true));
+      emit(state.copyWith(purchased: true, restored: true, loading: false));
+    });
   }
 }
