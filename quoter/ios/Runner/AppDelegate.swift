@@ -36,30 +36,29 @@ import UIKit
                 }
             case "removeAdsForever":
                 self.store.buyProduct("com.nanashi1111.quoter.all") { success in
+                    print("AppDelegate removeAdsForever", success)
                     result(success)
                 }
             case "removeAds1Month":
                 self.store.buyProduct("com.nanashi1111.quoter.sub.1month") { success in
+                    print("AppDelegate removeAds1Month", success)
                     result(success)
                 }
             case "removeAds2Months":
                 self.store.buyProduct("com.nanashi1111.quoter.sub.2month") { success in
+                    print("AppDelegate removeAds2Months", success)
                     result(success)
                 }
             case "removeAds6Months":
                 self.store.buyProduct("com.nanashi1111.quoter.sub.6month") { success in
+                    print("AppDelegate removeAds6Months", success)
                     result(success)
                 }
-            case "getPurchasedProduct":
-                if let prod = self.store.getPurchasedProduct().first {
-                    result(prod)
-                } else {
-                    result("")
-                }
             case "restoreProduct":
-                self.store.restorePurchases()
-                let prods = self.store.getPurchasedProduct()
-                result(prods.count > 0)
+                self.store.getPurchasedProduct { isPurchased in
+                    print("AppDelegate restoreProduct", isPurchased)
+                    result(isPurchased)
+                }
             default:
                 break
             }

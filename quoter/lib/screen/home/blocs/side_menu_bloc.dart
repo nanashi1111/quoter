@@ -16,7 +16,6 @@ class SideMenuBloc extends Bloc<SideMenuEvent, SideMenuState> {
         await AdsRepository.instance.setPurchaseRestored(true);
         await AdsRepository.instance.setAdsEnabled(false);
       }
-      //String purchasedProduct = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.getPurchasedProduct);
       bool purchasedProduct = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
       bool restored = await AdsRepository.instance.isPurchaseRestored();
       debugPrint("purchasedProduct: $purchasedProduct ; restored: $restored");

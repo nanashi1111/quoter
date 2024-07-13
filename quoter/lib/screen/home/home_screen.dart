@@ -44,7 +44,7 @@ class HomeScreenState extends State<HomeScreen> {
                 extendBody: true,
                 drawer: SideMenu(
                   onRemoveAdsForever: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
                     if (purchased) {
                       showInformationDialog(sideMenuContext, "Purchase", "You have purchased for ads free");
                     }
@@ -58,14 +58,14 @@ class HomeScreenState extends State<HomeScreen> {
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRemoveAds2Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
                     if (purchased) {
                       showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 2 months ads free");
                     }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRemoveAds6Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
                     if (purchased) {
                       showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 6 months ads free");
                     }

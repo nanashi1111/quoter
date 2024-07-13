@@ -32,7 +32,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'InAppPurchases', :git => 'git@github.com:nanashi1111/payment-sdk-ios.git', :commit => '4edadeb7c6965ca6b66b2ef6f7505cc06a5fb5c5'
+  pod 'InAppPurchases', :git => 'git@github.com:nanashi1111/payment-sdk-ios.git', :commit => 'd8908b68519c25b77887aaedf962147c7199c7fa'
   target 'RunnerTests' do
     inherit! :search_paths
   end
