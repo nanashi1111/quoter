@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
-showToast(BuildContext context, String content) {
+showToast(BuildContext context, String content, {Alignment alignment = Alignment.bottomCenter, Duration autoCloseDuration = const Duration(seconds: 2), bool bigToast = false}) {
   toastification.show(
     context: context,
-    alignment: Alignment.bottomCenter,
+    alignment: alignment,
     animationDuration: const Duration(milliseconds: 300),
     boxShadow: const [
       BoxShadow(
@@ -17,10 +16,21 @@ showToast(BuildContext context, String content) {
     ],
     style: ToastificationStyle.flat,
     showProgressBar: false,
-    autoCloseDuration: const Duration(seconds: 2),
-    description: Text(
-      content,
-      style: const TextStyle(color: Colors.blue),
-    ),
+    autoCloseDuration: autoCloseDuration,
+    description: !bigToast
+        ? Text(
+            content,
+            style: const TextStyle(color: Colors.blue),
+          )
+        : Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            child: Container(
+              width: double.infinity,
+              child: Text(
+                content,
+                style: const TextStyle(color: Colors.blue),
+              ),
+            ),
+          ),
   );
 }

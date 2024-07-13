@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quoter/common/dialog.dart';
 import 'package:quoter/common/method_channel_handler.dart';
 import 'package:quoter/common/toast.dart';
 import 'package:quoter/models/quote.dart';
@@ -43,39 +44,39 @@ class HomeScreenState extends State<HomeScreen> {
                 extendBody: true,
                 drawer: SideMenu(
                   onRemoveAdsForever: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                     if (purchased) {
-                      showToast(sideMenuContext, "You have purchased for ads free");
+                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for ads free");
                     }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRemoveAds1Month: () async {
                     bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                     if (purchased) {
-                      showToast(sideMenuContext, "You have purchased for 1 month ads free");
+                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 1 month ads free");
                     }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRemoveAds2Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                     if (purchased) {
-                      showToast(sideMenuContext, "You have purchased for 2 months ads free");
+                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 2 months ads free");
                     }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRemoveAds6Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
+                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                     if (purchased) {
-                      showToast(sideMenuContext, "You have purchased for 6 months ads free");
-                    } 
+                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 6 months ads free");
+                    }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
                   },
                   onRestoreAds: () async{
                     bool restoredSuccess = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
                     if (restoredSuccess) {
-                      showToast(sideMenuContext, "You have restored purchases");
+                      showInformationDialog(sideMenuContext, "Restored", "You have restored purchases");
                     } else {
-                      showToast(sideMenuContext, "Something failed, please try again later");
+                      showInformationDialog(sideMenuContext, "Restored", "Something failed, please try again later");
                     }
                     sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: restoredSuccess));
                   },
@@ -110,6 +111,7 @@ class HomeScreenState extends State<HomeScreen> {
       actions: [
         GestureDetector(
             onTap: () {
+
               context.read<HomeBloc>().add(HomeEvent(targetPosition: 1));
             },
             child: Padding(
@@ -125,6 +127,7 @@ class HomeScreenState extends State<HomeScreen> {
       leading: Builder(builder: (context) {
         return GestureDetector(
             onTap: () {
+              //showInformationDialog2(context, "Purchase", "You have purchased for 1 month ads free");
               Scaffold.of(context).openDrawer();
             },
             child: Padding(
