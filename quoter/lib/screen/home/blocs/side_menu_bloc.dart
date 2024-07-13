@@ -24,6 +24,7 @@ class SideMenuBloc extends Bloc<SideMenuEvent, SideMenuState> {
 
     on<_Restore>((event, emit) async {
       emit(state.copyWith(loading: true));
+      await AdsRepository.instance.setPurchaseRestored(true);
       emit(state.copyWith(purchased: true, restored: true, loading: false));
     });
   }
