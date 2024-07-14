@@ -9,17 +9,20 @@ part 'side_menu_state.dart';
 part 'side_menu_bloc.freezed.dart';
 
 class SideMenuBloc extends Bloc<SideMenuEvent, SideMenuState> {
-  SideMenuBloc() : super(const SideMenuState.initial(purchased: false, restored:false, loading: true)) {
+  SideMenuBloc() : super(const SideMenuState.initial(purchased: false, restored:false, loading: false)) {
     on<_GetPurchaseInfo>((event, emit) async {
-      emit(state.copyWith(loading: true));
+      // emit(state.copyWith(loading: true));
       if (event.afterRemoveAds) {
         await AdsRepository.instance.setPurchaseRestored(true);
         await AdsRepository.instance.setAdsEnabled(false);
       }
-      bool purchasedProduct = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
-      bool restored = await AdsRepository.instance.isPurchaseRestored();
-      debugPrint("purchasedProduct: $purchasedProduct ; restored: $restored");
-      emit(state.copyWith(purchased: purchasedProduct, restored: restored, loading: false));
+      // bool purchasedProduct = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
+      // bool restored = await AdsRepository.instance.isPurchaseRestored();
+      // debugPrint("purchasedProduct: $purchasedProduct ; restored: $restored");
+      // emit(state.copyWith(purchased: purchasedProduct, restored: restored, loading: false));
+      bool purchased = !(await AdsRepository.instance.isAdsEnabled());
+      debugPrint("Purchased = $purchased");
+      emit(state.copyWith(purchased: purchased, loading: false));
     });
 
     on<_Restore>((event, emit) async {

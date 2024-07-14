@@ -29,7 +29,7 @@ import UIKit
                     // Present the view controller
                     controller.present(activityViewController, animated: true, completion: nil)
                 }
-            case "showPrivacy":
+            case "openUrl":
                 let address = call.arguments as! String
                 if let url = URL(string: address) {
                     UIApplication.shared.open(url)

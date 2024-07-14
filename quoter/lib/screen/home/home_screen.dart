@@ -8,6 +8,7 @@ import 'package:quoter/common/dialog.dart';
 import 'package:quoter/common/method_channel_handler.dart';
 import 'package:quoter/common/toast.dart';
 import 'package:quoter/models/quote.dart';
+import 'package:quoter/repositories/ads_repository.dart';
 import 'package:quoter/screen/exploer/explorer_screen.dart';
 import 'package:quoter/screen/home/blocs/home_bloc.dart';
 import 'package:quoter/screen/home/blocs/side_menu_bloc.dart';
@@ -43,38 +44,19 @@ class HomeScreenState extends State<HomeScreen> {
               return Scaffold(
                 extendBody: true,
                 drawer: SideMenu(
-                  onRemoveAdsForever: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAdsForever);
-                    if (purchased) {
-                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for ads free");
-                    }
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-                  },
-                  onRemoveAds1Month: () async {
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
-                    if (purchased) {
-                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 1 month ads free");
-                    }
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-                  },
-                  onRemoveAds2Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
-                    if (purchased) {
-                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 2 months ads free");
-                    }
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-                  },
-                  onRemoveAds6Month: () async{
-                    bool purchased = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
-                    if (purchased) {
-                      showInformationDialog(sideMenuContext, "Purchase", "You have purchased for 6 months ads free");
-                    }
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.getPurchaseInfo(afterRemoveAds: purchased));
-                  },
                   onRestoreAds: () async{
-                    sideMenuContext.read<SideMenuBloc>().add(SideMenuEvent.restore());
-                    await Future.delayed(Duration(seconds: 1));
-                    showInformationDialog(sideMenuContext, "Restored", "You have restored purchases");
+                    bool restored = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.restoreProduct);
+                    if (restored) {
+                      sideMenuContext.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: true));
+                      showInformationDialog(homeContext, "Restored", "You have restored purchases", confirmActon: () async {
+                      });
+                    } else {
+                      showInformationDialog(homeContext, "Error", "Somethings went wrong, please try again later");
+                    }
+                  },
+                  onRemoveAds: () async {
+                    await sideMenuContext.pushNamed('go_premium');
+                    sideMenuContext.read<SideMenuBloc>().add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: false));
                   },
                   loading: sideMenuState.loading,
                   restored: sideMenuState.restored,

@@ -8,7 +8,7 @@ class MethodChannelHandler {
 
   static const channel = "com.quoter";
   static const shareFile = "shareFile";
-  static const showPrivacy = "showPrivacy";
+  static const openUrl = "openUrl";
   static const removeAdsForever = "removeAdsForever";
   static const removeAds1Month = "removeAds1Month";
   static const removeAds2Months = "removeAds2Months";

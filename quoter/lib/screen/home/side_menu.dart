@@ -10,17 +10,14 @@ import 'package:quoter/screen/remove_ads/remove_ads_modal.dart';
 
 class SideMenu extends StatelessWidget {
 
-  final Function onRemoveAds1Month;
-  final Function onRemoveAds2Month;
-  final Function onRemoveAds6Month;
-  final Function onRemoveAdsForever;
   final Function onRestoreAds;
+  final Function onRemoveAds;
 
   final bool purchased;
   final bool restored;
   final bool loading;
 
-  const SideMenu({super.key, required this.onRemoveAds1Month, required this.onRemoveAds2Month, required this.onRemoveAds6Month, required this.onRemoveAdsForever, required this.onRestoreAds, required this.purchased, required this.restored, required this.loading});
+  const SideMenu({super.key,required this.onRestoreAds, required this.purchased, required this.restored, required this.loading, required this.onRemoveAds});
 
   @override
   Widget build(BuildContext context) {
@@ -40,47 +37,24 @@ class SideMenu extends StatelessWidget {
                         onClick: () {
                           context.pushNamed("my_quotes");
                         }),
-                    Visibility(visible: purchased && !restored,child: SideMenuItem(
-                      model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Restore purchases'),
+                    Visibility(visible: true, child: SideMenuItem(
+                      model: SideMenuModel(icon: 'assets/images/ic_restore.svg', title: 'Restore purchases'),
                       onClick: () async {
                         onRestoreAds();
                       },
                     ),),
                     Visibility(
-                      visible: !purchased && !restored,
+                      visible: !purchased,
                       child: SideMenuItem(
                           model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
                           onClick: () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                builder: (modalContext) {
-                                  return SingleChildScrollView(
-                                    child: RemoveAdsModal(
-                                      onRemoveAds1Month: ()  {
-                                        onRemoveAds1Month();
-                                      },
-                                      onRemoveAds2Months: ()  {
-                                        onRemoveAds2Month();
-                                      },
-                                      onRemoveAds6Months: ()  {
-                                        onRemoveAds6Month();
-                                      },
-                                      onRemoveAdsForever: ()  {
-                                        onRemoveAdsForever();
-                                      },
-                                    ),
-                                  );
-                                });
+                            onRemoveAds();
                           }),
                     ),
                     SideMenuItem(
                         model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'),
                         onClick: () {
-                          MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.showPrivacy, data: "https://cungdev.com/quote-creator-privacy-policy/");
+                          MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.openUrl, data: "https://cungdev.com/quote-creator-privacy-policy/");
                         })
                   ],
                 )),
