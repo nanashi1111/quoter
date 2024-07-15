@@ -114,7 +114,7 @@ class GoPremiumScreen extends StatelessWidget {
                 description: "• Free ads forever",
                 colors: [HexColor("#000046"), HexColor("#1CB5E0")],
                 headerColor: HexColor("#000046"),
-                header: "Monthly Premium Subscription"),
+                header: "Remove ads forever"),
           ],
         ),
       ),
