@@ -35,22 +35,22 @@ import UIKit
                     UIApplication.shared.open(url)
                 }
             case "removeAdsForever":
-                self.store.buyProduct("com.nanashi1111.quoter.all") { success in
+                self.store.buyProduct("com.nanashi.quoter1111.all") { success in
                     print("AppDelegate removeAdsForever", success)
                     result(success)
                 }
             case "removeAds1Month":
-                self.store.buyProduct("com.nanashi1111.quoter.sub.1month") { success in
+                self.store.buyProduct("com.nanashi.quoter1111.1month") { success in
                     print("AppDelegate removeAds1Month", success)
                     result(success)
                 }
             case "removeAds2Months":
-                self.store.buyProduct("com.nanashi1111.quoter.sub.2month") { success in
+                self.store.buyProduct("com.nanashi.quoter1111.2month") { success in
                     print("AppDelegate removeAds2Months", success)
                     result(success)
                 }
             case "removeAds6Months":
-                self.store.buyProduct("com.nanashi1111.quoter.sub.6month") { success in
+                self.store.buyProduct("com.nanashi.quoter1111.6month") { success in
                     print("AppDelegate removeAds6Months", success)
                     result(success)
                 }
