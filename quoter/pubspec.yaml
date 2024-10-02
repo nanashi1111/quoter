@@ -67,5 +67,14 @@ flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Painter
+      fonts:
+        - asset: assets/fonts/painter.ttf
+          weight: 500
+    - family: Category
+      fonts:
+        - asset: assets/fonts/category_font.ttf
+          weight: 500
   assets:
     - assets/images/

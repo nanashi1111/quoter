@@ -8,6 +8,8 @@ const Color appBarColor = Colors.white;
 const Color selectedTabTextColor = Color.fromRGBO(40, 101, 201, 1.0);
 const Color unselectedTabTextColor = Color.fromRGBO(13, 29, 47, 1.0);
 
+Color darkCommonColor = HexColor("#1d233a");
+
 List<Color> textColors = List.of([
   HexColor("#91C8E4"),
   HexColor("#FF9999"),
