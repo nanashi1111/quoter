@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,29 +22,30 @@ class MyQuotesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
-        centerTitle: true,
+        leading: GestureDetector(
+          child: Container(
+            alignment: Alignment.center,
+            width: 40,
+            height: 40,
+            child: SvgPicture.asset(
+              'assets/images/ic_back.svg',
+              color: Colors.white,
+              width: 25,
+              height: 25,
+            ),
+          ),
+          onTap: () {
+            context.pop();
+          },
+        ),
         title: Text(
           "My quotes",
-          style: GoogleFonts.montserrat(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+          style: GoogleFonts.lato(color: Colors.white, fontSize: 14),
         ),
-        elevation: 0,
-        leading: Builder(builder: (context) {
-          return GestureDetector(
-              onTap: () {
-                context.pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: SvgPicture.asset(
-                  'assets/images/ic_back.svg',
-                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                  width: 45,
-                  height: 45,
-                ),
-              ));
-        }),
+        centerTitle: Platform.isIOS,
+        backgroundColor: darkCommonColor,
       ),
+      backgroundColor: darkCommonColor,
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: BlocProvider<MyQuotesBloc>(

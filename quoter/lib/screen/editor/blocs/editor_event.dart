@@ -7,8 +7,8 @@ abstract class EditorEvent extends Equatable {
 
 class InitialEditorEvent extends EditorEvent {
   Quote quote;
-  int backgroundPatternPos;
-  InitialEditorEvent({required this.quote, required this.backgroundPatternPos});
+  int backgroundImagePos;
+  InitialEditorEvent({required this.quote, required this.backgroundImagePos});
 
   @override
   List<Object?> get props => [quote];

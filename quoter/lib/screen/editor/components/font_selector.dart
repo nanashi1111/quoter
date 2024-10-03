@@ -42,7 +42,7 @@ class FontSelectorItem extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           "ABC",
-          style: style.copyWith(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
+          style: style.copyWith(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600),
         ),
       ),
       onTap: () {

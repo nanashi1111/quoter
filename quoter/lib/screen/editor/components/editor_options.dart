@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/editor_option.dart';
 import 'package:quoter/screen/editor/blocs/editor_option_bloc.dart';
@@ -71,17 +72,20 @@ class EditorOptionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color selectedColor = HexColor("#FFFFCC");
+    Color unselectedColor = selectedColor.withOpacity(0.5);
     if (editorOption.selected == true) {
+      
       return Stack(
         children: [
           Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
             padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: const Color.fromRGBO(13, 100, 255, 1), width: 1.5)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: selectedColor, width: 1.5)),
             child: Text(
               editorOption.title ?? "",
-              style: GoogleFonts.montserrat(color: const Color.fromRGBO(13, 100, 255, 1), fontWeight: FontWeight.bold),
+              style: GoogleFonts.montserrat(color: selectedColor, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -91,11 +95,11 @@ class EditorOptionItem extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: const Color.fromRGBO(13, 100, 255, 1),
+              color: selectedColor,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check,
-              color: Colors.white,
+              color: darkCommonColor,
               size: 10,
             ),
           )
@@ -110,10 +114,10 @@ class EditorOptionItem extends StatelessWidget {
           alignment: Alignment.center,
           margin: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: Colors.black.withOpacity(0.2), width: 1.5)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: unselectedColor, width: 1.5)),
           child: Text(
             editorOption.title ?? "",
-            style: GoogleFonts.montserrat(color: const Color.fromRGBO(34, 47, 70, 1), fontWeight: FontWeight.bold),
+            style: GoogleFonts.montserrat(color: unselectedColor, fontWeight: FontWeight.bold),
           ),
         ),
       );

@@ -21,10 +21,9 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       QuoteEditor quoteEditor = QuoteEditor(
           id: DateTime.now().millisecondsSinceEpoch,
           content: quote.content ?? "",
-          backgroundPatternPos: event.backgroundPatternPos,
-          backgroundImagePos: 0,
+          backgroundImagePos: event.backgroundImagePos,
           textStyle: defaultTextStyle(),
-          fontName: defaultFontName());
+          fontName: defaultFontName(), backgroundPatternPos: 0);
       emit(EditingState(quoteEditor: quoteEditor));
     });
 

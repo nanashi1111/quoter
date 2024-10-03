@@ -49,7 +49,7 @@ class MyQuoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width * 0.9;
+    double size = MediaQuery.of(context).size.width * 0.95;
     return GestureDetector(
       onTap: () {
         callback();

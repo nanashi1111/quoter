@@ -17,13 +17,13 @@ class EmptyView extends StatelessWidget {
             'assets/images/ic_my_quotes.svg',
             width: 70,
             height: 70,
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.white.withOpacity(0.8),
           ),
           verticalSpacing(20),
           Text(
             "No quotes found",
 
-            style: GoogleFonts.montserrat(color: Colors.black.withOpacity(0.4),
+            style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.8),
                 fontWeight: FontWeight.w700,
                 fontSize: 20),
           )

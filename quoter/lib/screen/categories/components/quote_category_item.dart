@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/models/category_of_quote.dart';
+import 'package:quoter/utils/constants.dart';
 
 class QuoteCategoryItem extends StatelessWidget {
   final CategoryOfQuote category;
@@ -26,7 +27,7 @@ class QuoteCategoryItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withOpacity(BLACK_LAYER_ALPHA),
               width: width,
               height: height,
               padding: EdgeInsets.all(20),

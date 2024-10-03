@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,12 @@ class CategoryDetailScreen extends StatelessWidget {
               color: darkCommonColor,
               child: ListView.separated(
                   itemBuilder: (context, pos) {
-                    return QuoteItem(quote: state.quotes[pos], onClick: (_) {}, imagePath: state.imagePath[pos]);
+                    return QuoteItem(quote: state.quotes[pos], onClick: (quote, pos) {
+                      // Map<String, String> pathParameters = <String, String>{}
+                      //   ..addEntries(List.of([MapEntry("quote", jsonEncode({'quote':quote})), MapEntry("backgroundImagePos", "${pos}")]));
+                      // context.pushNamed("editor", pathParameters: pathParameters);
+                      context.push('/editor', extra: { 'quote':  quote, 'backgroundImagePos': pos});
+                    }, imagePos: state.imagePositions[pos]);
                   },
                   separatorBuilder: (context, pos) {
                     return const SizedBox(

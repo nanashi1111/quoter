@@ -80,7 +80,7 @@ class _QuotesListState extends State<QuotesList> with AutomaticKeepAliveClientMi
                   callback: () {
                     AdmobHelper.instance.showInterAds(() {
                       Map<String, String> pathParameters = <String, String>{}
-                        ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundPatternPos", "${1 + pos % 6}")]));
+                        ..addEntries(List.of([MapEntry("quote", jsonEncode(quote)), MapEntry("backgroundImagePos", "${1 + pos % 6}")]));
                       context.pushNamed("editor", pathParameters: pathParameters);
                     });
                   },

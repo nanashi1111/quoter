@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/loading_view.dart';
 import 'package:quoter/common/method_channel_handler.dart';
 import 'package:quoter/models/side_menu_model.dart';
@@ -23,7 +24,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.sizeOf(context).width * 0.65,
-        color: Colors.white,
+        color: darkCommonColor,
         padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

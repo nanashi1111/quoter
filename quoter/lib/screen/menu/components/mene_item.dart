@@ -18,7 +18,15 @@ class _MenuItemState extends State<MenuItem> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
+    return InkWell(
+      onTap: () {
+        debugPrint("Pressed");
+        widget.onClick();
+      },
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
+      ),
+      splashColor: Colors.white.withOpacity(0.5),
       child: pressingDown ? Container(
         decoration: BoxDecoration(color: Colors.white.withOpacity(0.3), borderRadius: BorderRadius.circular(25), border: Border.all(color: Colors.white.withOpacity(1))),
         width: screenWidth * 2 / 3,
@@ -38,25 +46,6 @@ class _MenuItemState extends State<MenuItem> {
           style: GoogleFonts.lato(color: Colors.white, fontSize: 13),
         ),
       ),
-      onTap: () {
-        debugPrint("Pressed");
-        widget.onClick();
-      },
-      onTapDown: (_){
-        setState(() {
-          pressingDown = true;
-        });
-      },
-      onTapUp: (_) {
-        setState(() {
-          pressingDown = false;
-        });
-      },
-      onPanEnd: (_) {
-        setState(() {
-          pressingDown = false;
-        });
-      },
     );
   }
 }

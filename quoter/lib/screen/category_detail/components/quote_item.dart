@@ -6,18 +6,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quoter/common/method_channel_handler.dart';
 import 'package:quoter/common/toast.dart';
 import 'package:quoter/common/views.dart';
+import 'package:quoter/utils/constants.dart';
 import 'package:quoter/utils/widget_to_image/utils.dart';
 import 'package:quoter/utils/widget_to_image/widgets_to_image.dart';
 import 'package:path_provider/path_provider.dart';
 
 class QuoteItem extends StatelessWidget {
   final String quote;
-  final String imagePath;
-  final Function(String) onClick;
+  final int imagePos;
+  //final String imagePath;
+  final Function(String, int) onClick;
 
   WidgetsToImageController controller = WidgetsToImageController();
 
-  QuoteItem({super.key, required this.quote, required this.onClick, required this.imagePath});
+  QuoteItem({super.key, required this.quote, required this.onClick, required this.imagePos});
 
   _onCopy(BuildContext context) {
     Clipboard.setData(ClipboardData(text: quote));
@@ -41,6 +43,7 @@ class QuoteItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
+    String imagePath = 'assets/images/bg_${imagePos.toString().padLeft(2, '0')}.jpg';
     return WidgetsToImage(
         controller: controller,
         child: SizedBox(
@@ -60,7 +63,7 @@ class QuoteItem extends StatelessWidget {
                   height: size,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(20),
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withOpacity(BLACK_LAYER_ALPHA),
                   child: Text(
                     quote,
                     textAlign: TextAlign.center,
@@ -68,7 +71,7 @@ class QuoteItem extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  onClick(quote);
+                  onClick(quote, imagePos);
                 },
               ),
               Positioned(

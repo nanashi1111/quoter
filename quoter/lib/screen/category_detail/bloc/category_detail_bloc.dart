@@ -11,23 +11,19 @@ part 'category_detail_state.dart';
 part 'category_detail_bloc.freezed.dart';
 
 class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> {
-  CategoryDetailBloc() : super(const CategoryDetailState.initial(quotes: [], imagePath: [])) {
+  CategoryDetailBloc() : super(const CategoryDetailState.initial(quotes: [], imagePositions: [])) {
     on<_Started>((event, emit) async {
       String category = event.category.category ?? "";
       List<String> quotes = QuoteData.getQuotesOfCategory(category);
       quotes.shuffle(Random());
 
-      List<String> imagePath = [];
+      List<int> imagePositions = [];
       for (int i = 1 ; i <= quotes.length; i++ ) {
         Random random = Random();
-        int imageId = 1 + random.nextInt(86);
-        imagePath.add('assets/images/bg_${imageId.toString().padLeft(2, '0')}.${imageId == 40 ? 'png': 'jpg'}');
+        imagePositions.add(1 + random.nextInt(86));
       }
-      imagePath.shuffle(Random());
-      for (var element in imagePath) {
-        debugPrint(element);
-      }
-      emit(state.copyWith(quotes: quotes, imagePath: imagePath));
+      imagePositions.shuffle(Random());
+      emit(state.copyWith(quotes: quotes, imagePositions: imagePositions));
     });
   }
 }

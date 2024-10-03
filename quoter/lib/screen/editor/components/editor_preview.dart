@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quoter/utils/constants.dart';
 
 import '../../../models/quote_editor.dart';
 import '../blocs/editor_bloc.dart';
@@ -13,7 +14,7 @@ class EditorPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width * 0.9;
+    double size = MediaQuery.of(context).size.width;
     _controller.text = quoteEditor.content;
     _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
     double fontSize = (quoteEditor.textStyle.fontSize == 0 ? 22 : quoteEditor.textStyle.fontSize)?.toDouble() ?? 0;
@@ -27,7 +28,7 @@ class EditorPreview extends StatelessWidget {
           alignment: Alignment.center,
           width: size,
           height: size,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(1),
           child: TextField(
             style: quoteEditor.textStyle.copyWith(fontSize: fontSize, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
@@ -72,13 +73,23 @@ class EditorPreview extends StatelessWidget {
   Widget _provideImageBackground(double size) {
     if (quoteEditor.backgroundImagePos > 0) {
       String path = "assets/images/bg_${quoteEditor.backgroundImagePos.toString().padLeft(2, '0')}.jpg";
-      return Image(
-        image: AssetImage(
-          path,
+      return SizedBox(
+        width: size, height: size,
+        child: Stack(
+          children: [
+            Image(
+              image: AssetImage(
+                path,
+              ),
+              fit: BoxFit.cover,
+              width: size,
+              height: size,
+            ),
+            Container(
+              width: size, height: size, color: Colors.black.withOpacity(BLACK_LAYER_ALPHA),
+            )
+          ],
         ),
-        fit: BoxFit.cover,
-        width: size,
-        height: size,
       );
     }
     return SizedBox(

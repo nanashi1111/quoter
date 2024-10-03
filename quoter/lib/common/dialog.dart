@@ -26,7 +26,7 @@ class InformationModal extends StatelessWidget {
           ]),
         ),
         verticalSpacing(20),
-        GestureDetector(
+        InkWell(
           child: Container(
             width: double.infinity,
             height: 40,

@@ -39,12 +39,14 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-        name: 'editor',
-        path: '/editor:quote:backgroundPatternPos',
+        path: '/editor',
         builder: (context, state) {
+          Map<String, Object> data = state.extra as Map<String, Object>;
+          String quote = "${data['quote']}";
+          int backgroundImagePos = int.parse("${data['backgroundImagePos']}");
           return EditorScreen(
-            quote: Quote.fromJsonString(state.pathParameters['quote'] ?? ""),
-            backgroundPatternPos: int.parse(state.pathParameters['backgroundPatternPos'] ?? ""),
+            quote: Quote(content: quote),
+            backgroundImagePos: backgroundImagePos,
           );
         }),
     GoRoute(

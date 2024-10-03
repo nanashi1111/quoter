@@ -13,31 +13,29 @@ class SideMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      return Material(
-        child: InkWell(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  model.icon ?? "",
-                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                  width: 25,
-                  height: 25,
-                ),
-                horizontalSpacing(10),
-                Text(
-                  model.title ?? "",
-                  style: GoogleFonts.montserrat(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14),
-                )
-              ],
-            ),
+      return InkWell(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                model.icon ?? "",
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                width: 25,
+                height: 25,
+              ),
+              horizontalSpacing(10),
+              Text(
+                model.title ?? "",
+                style: GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
+              )
+            ],
           ),
-          onTap: () {
-            onClick();
-            Scaffold.of(context).closeDrawer();
-          },
         ),
+        onTap: () {
+          onClick();
+          Scaffold.of(context).closeDrawer();
+        },
       );
     });
 

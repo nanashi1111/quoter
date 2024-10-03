@@ -17,35 +17,36 @@ class GoPremiumScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
+        backgroundColor: darkCommonColor,
         centerTitle: true,
         title: Text(
           "Remove ads",
-          style: GoogleFonts.montserrat(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+          style: GoogleFonts.montserrat(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
         ),
         elevation: 10,
-        leading: Builder(builder: (context) {
-          return GestureDetector(
-              onTap: () {
-                context.pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: SvgPicture.asset(
-                  'assets/images/ic_back.svg',
-                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                  width: 45,
-                  height: 45,
-                ),
-              ));
-        }),
+        leading: GestureDetector(
+          child: Container(
+            alignment: Alignment.center,
+            width: 40,
+            height: 40,
+            child: SvgPicture.asset(
+              'assets/images/ic_back.svg',
+              color: Colors.white,
+              width: 25,
+              height: 25,
+            ),
+          ),
+          onTap: () {
+            context.pop();
+          },
+        ),
         actions: [
           GestureDetector(
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Center(child: Text(
                 "Restore",
-                style: GoogleFonts.montserrat(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500),
+                style: GoogleFonts.montserrat(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
               ),),
             ),
             onTap: () async {
@@ -61,6 +62,7 @@ class GoPremiumScreen extends StatelessWidget {
           )
         ],
       ),
+      backgroundColor: darkCommonColor,
       body: Container(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -113,7 +115,7 @@ class GoPremiumScreen extends StatelessWidget {
                 price: '100 USD',
                 description: "• Free ads forever",
                 colors: [HexColor("#000046"), HexColor("#1CB5E0")],
-                headerColor: HexColor("#000046"),
+                headerColor: Colors.white,
                 header: "Remove ads forever"),
           ],
         ),
