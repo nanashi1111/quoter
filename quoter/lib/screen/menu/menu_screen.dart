@@ -11,8 +11,16 @@ import 'package:quoter/screen/home/blocs/side_menu_bloc.dart';
 import 'package:quoter/screen/home/side_menu.dart';
 import 'package:quoter/screen/menu/components/mene_item.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
+
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+
+  bool _drawerOpened = false;
 
   @override
   Widget build(BuildContext homeContext) {
@@ -64,7 +72,7 @@ class MenuScreen extends StatelessWidget {
                           height: 40,
                           color: Colors.transparent,
                           child: SvgPicture.asset(
-                            'assets/images/ic_menu.svg',
+                            'assets/images/ic_menu_2.svg',
                             width: 20,
                             height: 20,
                             color: Colors.white,
@@ -77,6 +85,12 @@ class MenuScreen extends StatelessWidget {
                     );
                   }),
                 ),
+                onDrawerChanged: (open) {
+                  debugPrint("Drawer open: ${open}");
+                  setState(() {
+                    _drawerOpened = open;
+                  });
+                },
                 body: Container(
                   padding: const EdgeInsets.only(top: 20),
                   color: Colors.black.withOpacity(0.5),
@@ -84,10 +98,10 @@ class MenuScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      AnimatedOpacity(opacity: _drawerOpened ? 0 : 1, duration: const Duration(milliseconds: 300), child: const Text(
                         "Quote creator",
                         style: TextStyle(fontFamily: "Painter", fontSize: 40, color: Colors.white),
-                      ),
+                      ),),
                       const Spacer(),
                       Column(
                         children: [

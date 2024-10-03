@@ -5,7 +5,6 @@ import 'package:quoter/screen/categories/category_screen.dart';
 import 'package:quoter/screen/category_detail/category_detail_screen.dart';
 import 'package:quoter/screen/editor/editor_screen.dart';
 import 'package:quoter/screen/go_premium/go_premium_screen.dart';
-import 'package:quoter/screen/home/home_screen.dart';
 import 'package:quoter/screen/menu/menu_screen.dart';
 import 'package:quoter/screen/my_quotes/my_quotes_screen.dart';
 
@@ -30,12 +29,6 @@ final GoRouter router = GoRouter(
       path: '/category',
       builder: (context, state) {
         return const CategoryScreen();
-      },
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) {
-        return const HomeScreen();
       },
     ),
     GoRoute(

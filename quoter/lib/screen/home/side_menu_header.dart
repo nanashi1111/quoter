@@ -11,13 +11,12 @@ class SideMenuHeader extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 40),
       decoration: BoxDecoration(
           border: Border.all(
-              color: Colors.white
-          )
+              color: Colors.white,
+            
+          ),
+        borderRadius: BorderRadius.circular(10)
       ),
-      child: Text("Quoter", style: GoogleFonts.plaster(
-          fontSize: 30,
-        color: Colors.white
-      ),),
+      child: Text("Quoter", style: TextStyle(fontFamily: 'Painter', fontSize: 40, color: Colors.white),),
     ),);
   }
 }
