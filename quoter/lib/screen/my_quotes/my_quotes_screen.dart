@@ -56,7 +56,7 @@ class MyQuotesScreen extends StatelessWidget {
               if (numberOfQuotes > 0) {
                 return ListView.separated(
                   itemBuilder: (context, pos) {
-                    double size = MediaQuery.of(context).size.width * 0.9;
+                    double size = MediaQuery.of(context).size.width * 1;
 
                     QuoteEditor quote = state.quotes[pos];
                     return MyQuoteItem(

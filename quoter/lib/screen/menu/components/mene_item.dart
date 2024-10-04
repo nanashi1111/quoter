@@ -27,19 +27,10 @@ class _MenuItemState extends State<MenuItem> {
         borderRadius: BorderRadius.circular(25),
       ),
       splashColor: Colors.white.withOpacity(0.5),
-      child: pressingDown ? Container(
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.3), borderRadius: BorderRadius.circular(25), border: Border.all(color: Colors.white.withOpacity(1))),
-        width: screenWidth * 2 / 3,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        alignment: Alignment.center,
-        child: Text(
-          widget.title,
-          style: GoogleFonts.lato(color: Colors.white, fontSize: 13),
-        ),
-      ): Container(
+      child: Container(
         decoration: BoxDecoration(color: Colors.white.withOpacity(0), borderRadius: BorderRadius.circular(25), border: Border.all(color: Colors.white.withOpacity(0.5))),
         width: screenWidth * 2 / 3,
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(vertical: 12),
         alignment: Alignment.center,
         child: Text(
           widget.title,

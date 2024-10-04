@@ -12,11 +12,12 @@ class TextSizeSelector extends StatelessWidget {
     return BlocBuilder<EditorBloc, EditorState>(builder: (context, state) {
       return  Center(child: Padding(padding: EdgeInsets.all(20), child: Row(
         children: [
-          Text("A", style: TextStyle(fontSize: 15),),
+          Text("A", style: TextStyle(fontSize: 15, color: Colors.white),),
           SizedBox(width: 20,),
           Expanded(child: CupertinoSlider(
             min: 0.0,
             max: 100.0,
+            activeColor: Colors.white,
             value: _fontSize(state),
             onChanged: (value) {
               TextStyle newTextStyle = (state as EditingState).quoteEditor.textStyle.copyWith(fontSize: value);
@@ -25,7 +26,7 @@ class TextSizeSelector extends StatelessWidget {
             },
           ),),
           SizedBox(width: 20,),
-          Text("A", style: TextStyle(fontSize: 40),),
+          Text("A", style: TextStyle(fontSize: 40, color: Colors.white),),
         ],
       ),));
     });

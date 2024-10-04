@@ -8,6 +8,7 @@ import 'package:quoter/common/method_channel_handler.dart';
 import 'package:quoter/common/toast.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/quote_editor.dart';
+import 'package:quoter/utils/constants.dart';
 import 'package:quoter/utils/widget_to_image/utils.dart';
 import 'package:quoter/utils/widget_to_image/widgets_to_image.dart';
 import 'package:flutter/rendering.dart';
@@ -49,7 +50,7 @@ class MyQuoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width * 0.95;
+    double size = MediaQuery.of(context).size.width * 1;
     return GestureDetector(
       onTap: () {
         callback();
@@ -71,11 +72,7 @@ class MyQuoteItem extends StatelessWidget {
                       child: Text(
                         content.content ?? "",
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22,
-                        ),
+                        style: content.textStyle,
                       ),
                     )),
                 Positioned(right: 15,
@@ -142,13 +139,24 @@ class MyQuoteItem extends StatelessWidget {
   Widget _provideImageBackground() {
     if (content.backgroundImagePos > 0) {
       String path = "assets/images/bg_${content.backgroundImagePos.toString().padLeft(2, '0')}.jpg";
-      return Image(
-        image: AssetImage(
-          path,
+      return Container(
+        child: Stack(
+          children: [
+            Image(
+              image: AssetImage(
+                path,
+              ),
+              fit: BoxFit.cover,
+              width: size,
+              height: size,
+            ),
+            Container(
+              width: size,
+              height: size,
+              color: Colors.black.withOpacity(BLACK_LAYER_ALPHA),
+            )
+          ],
         ),
-        fit: BoxFit.cover,
-        width: size,
-        height: size,
       );
     }
     return SizedBox(

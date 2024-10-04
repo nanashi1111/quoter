@@ -86,7 +86,6 @@ class _MenuScreenState extends State<MenuScreen> {
                   }),
                 ),
                 onDrawerChanged: (open) {
-                  debugPrint("Drawer open: ${open}");
                   setState(() {
                     _drawerOpened = open;
                   });
