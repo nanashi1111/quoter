@@ -1,2 +1,4 @@
 
 const double BLACK_LAYER_ALPHA = 0.35;
+const PHOTO_PICKER_RATIO = 9 / 16;
+const IMAGE_SEPERATOR = "IMG_SEPERATOR";

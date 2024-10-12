@@ -125,9 +125,9 @@ class _MenuScreenState extends State<MenuScreen> {
                             height: 25,
                           ),
                           MenuItem(
-                              title: "My gallery",
+                              title: "Write diary",
                               onClick: () {
-                                homeContext.pushNamed("my_quotes");
+                                homeContext.push("/diary");
                               }),
                           const SizedBox(
                             height: 60,

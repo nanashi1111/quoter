@@ -4,6 +4,10 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to the photo library to allow users to pick photos for their diary posts.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera to allow users to take photos for their diary posts.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
