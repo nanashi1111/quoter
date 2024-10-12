@@ -36,7 +36,9 @@ class DiaryPhotoContent extends StatelessWidget {
           onPageChanged: (index, reason) {
             onPageChanged(index);
           }),
-      items: images.map((image) {
+      items: images
+          .where((image) => image.length > 1)
+          .map((image) {
         return Builder(
           builder: (BuildContext context) {
             return SizedBox(

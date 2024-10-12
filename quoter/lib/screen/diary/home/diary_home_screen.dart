@@ -22,6 +22,7 @@ class DiaryHomeScreen extends StatelessWidget {
       create: (_) => DiaryHomeBloc()..add(const DiaryHomeEvent.getCardsOfYear(year: null)),
       child: BlocBuilder<DiaryHomeBloc, DiaryHomeState>(
         builder: (context, state) {
+          double height = MediaQuery.of(context).size.height;
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -65,32 +66,45 @@ class DiaryHomeScreen extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [YearSelector(year: state.year, onYearSelected: (selectedYear) {
-                          debugPrint("SelectedYear: $selectedYear");
-                          context.read<DiaryHomeBloc>().add(DiaryHomeEvent.getCardsOfYear(year: selectedYear));
-                        })],
+                        children: [
+                          YearSelector(
+                              year: state.year,
+                              onYearSelected: (selectedYear) {
+                                debugPrint("SelectedYear: $selectedYear");
+                                context.read<DiaryHomeBloc>().add(DiaryHomeEvent.getCardsOfYear(year: selectedYear));
+                              })
+                        ],
                       ),
                       verticalSpacing(40),
                       CarouselSlider(
-                        options: CarouselOptions(height: 500.0, viewportFraction: 0.8),
+                        options: CarouselOptions(viewportFraction: 0.8, height: height * 0.6),
                         items: state.cards.map((card) {
                           return Builder(
                             builder: (BuildContext context) {
                               return Container(
                                   width: MediaQuery.of(context).size.width,
                                   margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: CardDiaryItem(diaryCard: card, onClick: (card) {}));
+                                  child: CardDiaryItem(
+                                      diaryCard: card,
+                                      onClick: (card) {
+                                        debugPrint("Card Clicked: ${card.month} / ${card.year}");
+                                        context.push("/month_diaries", extra: {"month": card.month, "year": card.year});
+                                      }));
                             },
                           );
                         }).toList(),
                       )
                     ],
                   ),
-                  CardActions(showingCalendar: state.showingCalendar, onShowQuotes: () {}, onWriteDiary: () {
-                    context.push("/create_diary");
-                  }, onSwitchCardMode: () {
-                    context.read<DiaryHomeBloc>().add(const DiaryHomeEvent.switchViewMode());
-                  })
+                  CardActions(
+                      showingCalendar: state.showingCalendar,
+                      onShowQuotes: () {},
+                      onWriteDiary: () {
+                        context.push("/create_diary");
+                      },
+                      onSwitchCardMode: () {
+                        context.read<DiaryHomeBloc>().add(const DiaryHomeEvent.switchViewMode());
+                      })
                 ],
               ),
             ),

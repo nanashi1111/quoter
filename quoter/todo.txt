@@ -1,0 +1,4 @@
+- flip diary card
+- settings
+- search diary
+- change card image

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quoter/common/colors.dart';
+import 'package:quoter/common/toast.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/diary.dart';
 import 'package:quoter/screen/diary/create/bloc/create_diary_bloc.dart';
@@ -23,23 +24,30 @@ class CreateDiaryScreen extends StatelessWidget {
 
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
-  final  CarouselSliderController _carouselController = CarouselSliderController();
-
+  final CarouselSliderController _carouselController = CarouselSliderController();
 
   CreateDiaryScreen({super.key, required this.diary});
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint("CreateDiaryScreen: ${diary}");
+
     return BlocProvider<CreateDiaryBloc>(
       create: (_) => CreateDiaryBloc()..add(CreateDiaryEvent.started(diary: diary)),
       child: BlocConsumer<CreateDiaryBloc, CreateDiaryState>(
         listener: (context, state) async {
+          if (state.savedDiary) {
+            showToast(context, "Saved diary successfully");
+            context.pop();
+            return;
+          }
           debugPrint("Jump to page: ${state.currentPos}");
           _carouselController.jumpToPage(state.currentPos);
         },
         listenWhen: (previous, current) {
           print("build_CreateDiaryBloc: ${previous.cacheDiary.images != current.cacheDiary.images}");
-          return previous.cacheDiary.images != current.cacheDiary.images;
+          return previous.cacheDiary.images != current.cacheDiary.images || current.savedDiary;
         },
         buildWhen: (previous, current) {
           print("build_CreateDiaryBloc: ${previous.cacheDiary.images != current.cacheDiary.images}");
@@ -49,13 +57,26 @@ class CreateDiaryScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               actions: [
-                Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Save",
-                    style: GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                GestureDetector(
+                  child: Container(
+                    padding: const EdgeInsets.only(right: 10),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Save",
+                      style: GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                    ),
                   ),
+                  onTap: () {
+                    if (_titleController.text.isEmpty) {
+                      showToast(context, "Please provide title");
+                      return;
+                    }
+                    if (_contentController.text.isEmpty) {
+                      showToast(context, "Please provide content");
+                      return;
+                    }
+                    context.read<CreateDiaryBloc>().add(CreateDiaryEvent.save(title: _titleController.text, content: _contentController.text));
+                  },
                 )
               ],
               leading: GestureDetector(
@@ -99,11 +120,14 @@ class CreateDiaryScreen extends StatelessWidget {
                       DiaryPhotoPicker(
                         images: state.cacheDiary.images.split(IMAGE_SEPERATOR),
                         onAddPhotoClicked: () async {
+                          if (!context.mounted) {
+                            return;
+                          }
+                          debugPrint("Add photo clicked");
                           final XFile? galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
                           if (galleryPhoto == null) {
                             return;
                           }
-
                           context.read<CreateDiaryBloc>().add(CreateDiaryEvent.addImages(images: [galleryPhoto], pos: state.currentPos));
                         },
                         onRemovePhotoClicked: () {
@@ -114,7 +138,10 @@ class CreateDiaryScreen extends StatelessWidget {
                   ),
                   verticalSpacing(10),
                   DiaryDate(dateTime: DateTime(state.cacheDiary.year, state.cacheDiary.month, state.cacheDiary.day)),
-                  Expanded(child: DiaryContent(contentController: _contentController, titleController: _titleController))
+                  Expanded(child: DiaryContent(
+                      diary: state.cacheDiary,
+                      contentController: _contentController,
+                      titleController: _titleController))
                 ],
               ),
             ),

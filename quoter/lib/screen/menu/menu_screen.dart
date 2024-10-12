@@ -98,7 +98,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedOpacity(opacity: _drawerOpened ? 0 : 1, duration: const Duration(milliseconds: 300), child: const Text(
-                        "Quote creator",
+                        "Daily Motivation",
                         style: TextStyle(fontFamily: "Painter", fontSize: 40, color: Colors.white),
                       ),),
                       const Spacer(),

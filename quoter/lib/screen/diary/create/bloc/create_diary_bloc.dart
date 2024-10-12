@@ -4,18 +4,22 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quoter/common/dependency_injection.dart';
 import 'package:quoter/common/images.dart';
 import 'package:quoter/models/diary.dart';
+import 'package:quoter/repositories/diary_repository.dart';
 import 'package:quoter/utils/constants.dart';
 
 part 'create_diary_event.dart';
-
 part 'create_diary_state.dart';
-
 part 'create_diary_bloc.freezed.dart';
 
 class CreateDiaryBloc extends Bloc<CreateDiaryEvent, CreateDiaryState> {
-  CreateDiaryBloc() : super(const CreateDiaryState.initial(currentPos: 0, cacheDiary: Diary(id: 0, day: 1, month: 1, year: 1, content: "content", title: "", images: ""))) {
+
+  final DiaryRepository diaryRepository = getIt.get();
+
+  CreateDiaryBloc() : super(const CreateDiaryState.initial(currentPos: 0, savedDiary: false, cacheDiary: Diary(id: 0, day: 1, month: 1, year: 1, content: "", title: "",
+      images: "_"))) {
     on<_Started>((event, emit) async {
       Diary? diary = event.diary;
       if (diary == null) {
@@ -60,6 +64,13 @@ class CreateDiaryBloc extends Bloc<CreateDiaryEvent, CreateDiaryState> {
 
     on<_OnPageChanged>((event, emit) async {
       emit(state.copyWith(currentPos: event.pos));
+    });
+
+    on<_Save>((event, emit) async {
+      Diary cachedDiary = state.cacheDiary.copyWith(title: event.title, content: event.content);
+      debugPrint("Save diary: $cachedDiary");
+      await diaryRepository.saveDiary(cachedDiary);
+      emit(state.copyWith(savedDiary: true));
     });
   }
 }

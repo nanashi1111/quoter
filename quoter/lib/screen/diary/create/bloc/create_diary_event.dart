@@ -6,5 +6,5 @@ class CreateDiaryEvent with _$CreateDiaryEvent {
   const factory CreateDiaryEvent.addImages({required List<XFile> images, required int pos}) = _AddImages;
   const factory CreateDiaryEvent.removeImage({required int pos}) = _RemoveImage;
   const factory CreateDiaryEvent.onPageChanged({required int pos}) = _OnPageChanged;
-
+  const factory CreateDiaryEvent.save({required String title, required String content}) = _Save;
 }

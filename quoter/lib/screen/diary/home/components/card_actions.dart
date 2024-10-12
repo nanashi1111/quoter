@@ -15,7 +15,7 @@ class CardActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Padding(padding: EdgeInsets.only(bottom: 10), child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -33,7 +33,7 @@ class CardActions extends StatelessWidget {
           ],
         )
       ],
-    );
+    ),);
   }
 }
 

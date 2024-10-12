@@ -63,3 +63,55 @@ String getDateInString(DateTime dateTime) {
   String dateInString = "${daysOfWeek[dateTime.weekday % 7]}, ${getMonthInString(dateTime.month)} ${dateTime.day}/${dateTime.year}";
   return dateInString;
 }
+
+String getDayOfWeek(DateTime dateTime) {
+  List<String> daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return daysOfWeek[dateTime.weekday % 7];
+}
+
+int getNumberOfDayInMonth(int month, int year) {
+  int numberOfDayInMonth = 0;
+  switch (month) {
+    case 1:
+      numberOfDayInMonth = 31;
+      break;
+    case 2:
+      if (year % 4 == 0) {
+        numberOfDayInMonth = 29;
+      } else {
+        numberOfDayInMonth = 28;
+      }
+      break;
+    case 3:
+      numberOfDayInMonth = 31;
+      break;
+    case 4:
+      numberOfDayInMonth = 30;
+      break;
+    case 5:
+      numberOfDayInMonth = 31;
+      break;
+    case 6:
+      numberOfDayInMonth = 30;
+      break;
+    case 7:
+      numberOfDayInMonth = 31;
+      break;
+    case 8:
+      numberOfDayInMonth = 31;
+      break;
+    case 9:
+      numberOfDayInMonth = 30;
+      break;
+    case 10:
+      numberOfDayInMonth = 31;
+      break;
+    case 11:
+      numberOfDayInMonth = 30;
+      break;
+    case 12:
+      numberOfDayInMonth = 31;
+      break;
+  }
+  return numberOfDayInMonth;
+}

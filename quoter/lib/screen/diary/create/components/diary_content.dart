@@ -15,7 +15,7 @@ class DiaryContent extends StatelessWidget {
     contentController.value = TextEditingValue(text: diary?.content ?? '');
     titleController.value = TextEditingValue(text: diary?.title ?? '');
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
