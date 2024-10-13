@@ -89,4 +89,8 @@ extension CardDiaryExt on DiaryCard {
     return "assets/images/bg_$month.jpg";
   }
 
+  bool useSolidBackgroundColor() {
+    return image.length == 7 && image.startsWith("#");
+  }
+
 }

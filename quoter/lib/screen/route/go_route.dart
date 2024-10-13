@@ -7,6 +7,7 @@ import 'package:quoter/screen/category_detail/category_detail_screen.dart';
 import 'package:quoter/screen/diary/create/create_diary_screen.dart';
 import 'package:quoter/screen/diary/home/diary_home_screen.dart';
 import 'package:quoter/screen/diary/list/month/month_diaries_screen.dart';
+import 'package:quoter/screen/diary/list/search/search_diary_screen.dart';
 import 'package:quoter/screen/editor/editor_screen.dart';
 import 'package:quoter/screen/go_premium/go_premium_screen.dart';
 import 'package:quoter/screen/menu/menu_screen.dart';
@@ -17,7 +18,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return MenuScreen();
+        return const MenuScreen();
       },
     ),
     GoRoute(
@@ -39,6 +40,12 @@ final GoRouter router = GoRouter(
       path: '/diary',
       builder: (context, state) {
         return DiaryHomeScreen();
+      },
+    ),
+    GoRoute(
+      path: '/search_diary',
+      builder: (context, state) {
+        return const SearchDiaryScreen();
       },
     ),
     GoRoute(

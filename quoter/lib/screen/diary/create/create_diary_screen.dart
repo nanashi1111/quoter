@@ -16,25 +16,39 @@ import 'package:quoter/screen/diary/create/components/diary_content.dart';
 import 'package:quoter/screen/diary/create/components/diary_date.dart';
 import 'package:quoter/screen/diary/create/components/diary_photo_content.dart';
 import 'package:quoter/screen/diary/create/components/diary_photo_picker.dart';
+import 'package:quoter/utils/admob_helper.dart';
 import 'package:quoter/utils/constants.dart';
 
-class CreateDiaryScreen extends StatelessWidget {
-  final ImagePicker picker = ImagePicker();
+class CreateDiaryScreen extends StatefulWidget {
   final Diary? diary;
 
+
+  const CreateDiaryScreen({super.key, required this.diary});
+
+  @override
+  State<CreateDiaryScreen> createState() => _CreateDiaryScreenState();
+}
+
+class _CreateDiaryScreenState extends State<CreateDiaryScreen> {
+  final ImagePicker picker = ImagePicker();
+
   final TextEditingController _contentController = TextEditingController();
+
   final TextEditingController _titleController = TextEditingController();
+
   final CarouselSliderController _carouselController = CarouselSliderController();
 
-  CreateDiaryScreen({super.key, required this.diary});
+  @override
+  void dispose() {
+    _contentController.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    debugPrint("CreateDiaryScreen: ${diary}");
-
     return BlocProvider<CreateDiaryBloc>(
-      create: (_) => CreateDiaryBloc()..add(CreateDiaryEvent.started(diary: diary)),
+      create: (_) => CreateDiaryBloc()..add(CreateDiaryEvent.started(diary: widget.diary)),
       child: BlocConsumer<CreateDiaryBloc, CreateDiaryState>(
         listener: (context, state) async {
           if (state.savedDiary) {
@@ -43,7 +57,7 @@ class CreateDiaryScreen extends StatelessWidget {
             return;
           }
           debugPrint("Jump to page: ${state.currentPos}");
-          _carouselController.jumpToPage(state.currentPos);
+          Future.delayed(const Duration(milliseconds: 300), () { _carouselController.jumpToPage(state.currentPos); });
         },
         listenWhen: (previous, current) {
           print("build_CreateDiaryBloc: ${previous.cacheDiary.images != current.cacheDiary.images}");
@@ -55,6 +69,7 @@ class CreateDiaryScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             appBar: AppBar(
               actions: [
                 GestureDetector(
@@ -75,7 +90,9 @@ class CreateDiaryScreen extends StatelessWidget {
                       showToast(context, "Please provide content");
                       return;
                     }
-                    context.read<CreateDiaryBloc>().add(CreateDiaryEvent.save(title: _titleController.text, content: _contentController.text));
+                    AdmobHelper.instance.showInterAds(() {
+                      context.read<CreateDiaryBloc>().add(CreateDiaryEvent.save(title: _titleController.text, content: _contentController.text));
+                    });
                   },
                 )
               ],
@@ -104,45 +121,49 @@ class CreateDiaryScreen extends StatelessWidget {
             ),
             backgroundColor: darkCommonColor,
             body: Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      DiaryPhotoContent(
-                          initPos: state.currentPos,
-                          controller: _carouselController,
-                          onPageChanged: (currentPos) {
-                            debugPrint("OnPageChanged: $currentPos");
-                            context.read<CreateDiaryBloc>().add(CreateDiaryEvent.onPageChanged(pos: currentPos));
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(bottom: 1),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        DiaryPhotoContent(
+                            initPos: state.currentPos,
+                            controller: _carouselController,
+                            onPageChanged: (currentPos) {
+                              debugPrint("OnPageChanged: $currentPos");
+                              context.read<CreateDiaryBloc>().add(CreateDiaryEvent.onPageChanged(pos: currentPos));
+                            },
+                            images: state.cacheDiary.images.split(IMAGE_SEPERATOR)),
+                        DiaryPhotoPicker(
+                          images: state.cacheDiary.images.split(IMAGE_SEPERATOR),
+                          onAddPhotoClicked: () async {
+                            debugPrint("Add photo clicked");
+                            final XFile? galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
+                            if (galleryPhoto == null) {
+                              return;
+                            }
+                            if (!context.mounted) {
+                              return;
+                            }
+                            context.read<CreateDiaryBloc>().add(CreateDiaryEvent.addImages(images: [galleryPhoto], pos: state.currentPos));
                           },
-                          images: state.cacheDiary.images.split(IMAGE_SEPERATOR)),
-                      DiaryPhotoPicker(
-                        images: state.cacheDiary.images.split(IMAGE_SEPERATOR),
-                        onAddPhotoClicked: () async {
-                          if (!context.mounted) {
-                            return;
-                          }
-                          debugPrint("Add photo clicked");
-                          final XFile? galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
-                          if (galleryPhoto == null) {
-                            return;
-                          }
-                          context.read<CreateDiaryBloc>().add(CreateDiaryEvent.addImages(images: [galleryPhoto], pos: state.currentPos));
-                        },
-                        onRemovePhotoClicked: () {
-                          context.read<CreateDiaryBloc>().add(CreateDiaryEvent.removeImage(pos: context.read<CreateDiaryBloc>().state.currentPos));
-                        },
-                      ),
-                    ],
-                  ),
-                  verticalSpacing(10),
-                  DiaryDate(dateTime: DateTime(state.cacheDiary.year, state.cacheDiary.month, state.cacheDiary.day)),
-                  Expanded(child: DiaryContent(
-                      diary: state.cacheDiary,
-                      contentController: _contentController,
-                      titleController: _titleController))
-                ],
+                          onRemovePhotoClicked: () {
+                            context.read<CreateDiaryBloc>().add(CreateDiaryEvent.removeImage(pos: context.read<CreateDiaryBloc>().state.currentPos));
+                          },
+                        ),
+                      ],
+                    ),
+                    verticalSpacing(10),
+                    DiaryDate(dateTime: DateTime(state.cacheDiary.year, state.cacheDiary.month, state.cacheDiary.day)),
+                    DiaryContent(
+                        diary: state.cacheDiary,
+                        contentController: _contentController,
+                        titleController: _titleController),
+                  ],
+                ),
               ),
             ),
           );

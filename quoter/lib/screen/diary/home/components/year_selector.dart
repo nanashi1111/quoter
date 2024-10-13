@@ -17,7 +17,7 @@ class YearSelector extends StatelessWidget {
         direction: Axis.horizontal,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text("$year", style: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 30, fontWeight: FontWeight.bold),),
+          Text("$year", style: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 25, fontWeight: FontWeight.bold),),
           horizontalSpacing(10),
           Icon(Icons.keyboard_arrow_down_outlined, color: Colors.white.withOpacity(0.8),),
         ],

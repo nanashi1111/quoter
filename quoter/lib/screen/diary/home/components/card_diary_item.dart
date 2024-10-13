@@ -1,39 +1,49 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/card_diary_ext.dart';
+import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/date_time_ext.dart';
+import 'package:quoter/common/images.dart';
 import 'package:quoter/common/views.dart';
 import 'package:quoter/models/diary_card.dart';
+import 'package:quoter/screen/diary/home/components/card_design_panel.dart';
 
 class CardDiaryItem extends StatelessWidget {
   final DiaryCard diaryCard;
   final Function(DiaryCard) onClick;
+  final Function(DiaryCard, String) onDesignChanged;
 
-  const CardDiaryItem({super.key, required this.diaryCard, required this.onClick});
+  const CardDiaryItem({super.key, required this.diaryCard, required this.onClick, required this.onDesignChanged});
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height * 0.6;
+    double width = height * 0.8;
     return GestureDetector(
       child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
+        width: width,
+        height: height,
         child: Stack(
           children: [
-            _provideImage(),
+            diaryCard.useSolidBackgroundColor() ? _provideSolidBackgroundColor(context): _provideImage(context),
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: Container(
-                width: double.infinity,
-                height: double.infinity,
+                width: width,
+                height: height,
                 color: Colors.black.withOpacity(0.3),
               ),
             ),
             _provideMonth(),
             _provideStatistic(),
-            _provdeOptions()
+            _provideOptions(context)
           ],
         ),
       ),
@@ -43,18 +53,22 @@ class CardDiaryItem extends StatelessWidget {
     );
   }
 
-  Widget _provdeOptions() {
+  Widget _provideOptions(BuildContext context) {
     return Positioned(
       right: 20,
       bottom: 20,
-      child: GestureDetector(child: SvgPicture.asset(
-        "assets/images/ic_three_dots.svg",
-        width: 20,
-        height: 20,
-        color: Colors.white,
-      ), onTap: () {
-        debugPrint("Click on options");
-      }, ),
+      child: GestureDetector(
+        child: SvgPicture.asset(
+          "assets/images/ic_three_dots.svg",
+          width: 20,
+          height: 20,
+          color: Colors.white,
+        ),
+        onTap: () {
+          debugPrint("Click on options");
+          _showCardDesignBottomSheet(context);
+        },
+      ),
     );
   }
 
@@ -107,23 +121,53 @@ class CardDiaryItem extends StatelessWidget {
     );
   }
 
-  Widget _provideImage() {
+  Widget _provideSolidBackgroundColor(BuildContext context) {
+    double height = MediaQuery.of(context).size.height * 0.6;
+    double width = height * 0.8;
+    return Container(
+      width: width, height: height, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: HexColor(diaryCard.image)),
+    );
+  }
+
+  Widget _provideImage(BuildContext context) {
+    double height = MediaQuery.of(context).size.height * 0.6;
+    double width = height * 0.8;
     Image image = diaryCard.image.isNotEmpty
-        ? Image.network(
-            diaryCard.image,
+        ? Image.memory(
+            base64Decode(diaryCard.image),
             fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+            width: width,
+            height: height,
           )
-        : Image.asset(
-            diaryCard.getDefaultImagePath(),
+        : Image(
+            image: ResizeImage(AssetImage(diaryCard.getDefaultImagePath(), ),width: width.toInt(), height: height.toInt()),
             fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+      width: width,
+      height: height,
           );
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: image,
     );
+  }
+
+  _showCardDesignBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return  CardDesignPanel(onColorSelected: (hex) {
+            onDesignChanged(diaryCard, hex);
+            context.pop();
+          }, onImageSelected: (file) async {
+            String base64Image = await ImageUtils.encodeImage(File(file.path));
+            onDesignChanged(diaryCard, base64Image);
+            if (context.mounted) {
+              context.pop();
+            }
+          },);
+        });
   }
 }

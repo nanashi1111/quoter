@@ -16,4 +16,12 @@ class DiaryRepository extends BaseRepository {
   Future<List<Diary>> getDiaries(int month, int year) {
     return dataBaseManager.getDiaries(month, year);
   }
+
+  Future<void> updateCardImage(DiaryCard card, String image) {
+    return dataBaseManager.updateCardImage(card.month, card.year, image);
+  }
+
+  Future<List<Diary>> searchDiaries(String query) {
+    return dataBaseManager.searchDiaries(query);
+  }
 }

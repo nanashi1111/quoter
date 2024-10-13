@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/date_time_ext.dart';
 import 'package:quoter/common/views.dart';
+import 'package:quoter/models/diary.dart';
 import 'package:quoter/screen/diary/list/diary_list.dart';
 import 'package:quoter/screen/diary/list/month/bloc/month_diary_bloc.dart';
 
@@ -34,7 +35,13 @@ class MonthDiariesScreen extends StatelessWidget {
                   ),
                 ),
                 onTap: () async {
-                  await context.push("/create_diary");
+
+                  DateTime? selectedDate = await showDatePickerForDiary(context);
+                  if (selectedDate == null) {
+                    return;
+                  }
+                  Diary diary = Diary(id: 0, day: selectedDate.day, month: selectedDate.month, year: selectedDate.year, content: "", title: "", images: "");
+                  await context.push("/create_diary", extra: diary);
                   if (!context.mounted) {
                     return;
                   }
@@ -60,5 +67,12 @@ class MonthDiariesScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<DateTime?> showDatePickerForDiary(BuildContext context) {
+    return showDatePicker(context: context,
+        helpText: "Select a date to write",
+        firstDate: DateTime(year, month, 1),
+        lastDate: DateTime(year, month, getNumberOfDayInMonth(month, year)));
   }
 }

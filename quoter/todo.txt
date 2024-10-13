@@ -1,4 +1,6 @@
-- flip diary card
-- settings
-- search diary
-- change card image
+- flip diary card => skip
+- settings => skip
+// search diary
+// change card image
+// Empty dataset
+// display current month first

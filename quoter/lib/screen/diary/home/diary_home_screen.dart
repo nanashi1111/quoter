@@ -14,13 +14,23 @@ import 'package:quoter/screen/diary/home/components/card_diary_item.dart';
 import 'package:quoter/screen/diary/home/components/year_selector.dart';
 
 class DiaryHomeScreen extends StatelessWidget {
-  const DiaryHomeScreen({super.key});
+  final CarouselSliderController carouselController = CarouselSliderController();
+
+  DiaryHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DiaryHomeBloc>(
       create: (_) => DiaryHomeBloc()..add(const DiaryHomeEvent.getCardsOfYear(year: null)),
-      child: BlocBuilder<DiaryHomeBloc, DiaryHomeState>(
+      child: BlocConsumer<DiaryHomeBloc, DiaryHomeState>(
+        listener: (context, state) {
+          if (state.year == DateTime.now().year) {
+            int currentMonth = DateTime.now().month;
+            Future.delayed(const Duration(milliseconds: 300), () {
+              carouselController.jumpToPage(currentMonth - 1);
+            });
+          }
+        },
         builder: (context, state) {
           double height = MediaQuery.of(context).size.height;
           return Scaffold(
@@ -31,22 +41,33 @@ class DiaryHomeScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   width: 40,
                   height: 40,
-                  child: SvgPicture.asset('assets/images/ic_quoter_search.svg', color: Colors.white, width: 25, height: 25),
+                  child: SvgPicture.asset(
+                    'assets/images/ic_back.svg',
+                    color: Colors.white,
+                    width: 25,
+                    height: 25,
+                  ),
                 ),
                 onTap: () {
                   context.pop();
                 },
               ),
               actions: [
-                GestureDetector(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(right: 15),
-                    width: 50,
-                    height: 50,
-                    child: SvgPicture.asset('assets/images/ic_diary_setting.svg', color: Colors.white, width: 50, height: 50),
-                  ),
-                  onTap: () {},
+                Row(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 38,
+                        height: 38,
+                        child: SvgPicture.asset('assets/images/ic_quoter_search.svg', color: Colors.white, width: 25, height: 25),
+                      ),
+                      onTap: () {
+                        context.push("/search_diary");
+                      },
+                    ),
+                    horizontalSpacing(10)
+                  ],
                 )
               ],
               title: Text(
@@ -78,17 +99,25 @@ class DiaryHomeScreen extends StatelessWidget {
                       verticalSpacing(40),
                       CarouselSlider(
                         options: CarouselOptions(viewportFraction: 0.8, height: height * 0.6),
+                        carouselController: carouselController,
                         items: state.cards.map((card) {
                           return Builder(
-                            builder: (BuildContext context) {
+                            builder: (BuildContext builderContext) {
                               return Container(
                                   width: MediaQuery.of(context).size.width,
                                   margin: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: CardDiaryItem(
                                       diaryCard: card,
-                                      onClick: (card) {
+                                      onDesignChanged: (card, design) {
+                                        context.read<DiaryHomeBloc>().add(DiaryHomeEvent.updateCardDesign(card: card, design: design));
+                                      },
+                                      onClick: (card) async {
                                         debugPrint("Card Clicked: ${card.month} / ${card.year}");
-                                        context.push("/month_diaries", extra: {"month": card.month, "year": card.year});
+                                        await context.push("/month_diaries", extra: {"month": card.month, "year": card.year});
+                                        if (!context.mounted) {
+                                          return;
+                                        }
+                                        context.read<DiaryHomeBloc>().add(const DiaryHomeEvent.refresh());
                                       }));
                             },
                           );
@@ -98,9 +127,15 @@ class DiaryHomeScreen extends StatelessWidget {
                   ),
                   CardActions(
                       showingCalendar: state.showingCalendar,
-                      onShowQuotes: () {},
-                      onWriteDiary: () {
-                        context.push("/create_diary");
+                      onShowQuotes: () {
+                        context.push("/category");
+                      },
+                      onWriteDiary: () async {
+                        await context.push("/create_diary");
+                        if (!context.mounted) {
+                          return;
+                        }
+                        context.read<DiaryHomeBloc>().add(const DiaryHomeEvent.refresh());
                       },
                       onSwitchCardMode: () {
                         context.read<DiaryHomeBloc>().add(const DiaryHomeEvent.switchViewMode());

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quoter/common/colors.dart';
 import 'package:quoter/common/date_time_ext.dart';
 import 'package:quoter/common/views.dart';
+import 'package:quoter/screen/diary/home/components/card_design_panel.dart';
 
 class CardActions extends StatelessWidget {
   final bool showingCalendar;
@@ -15,25 +16,34 @@ class CardActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(bottom: 10), child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const WeatherIcon(),
-        Wrap(
-          children: [
-            CardActionItem(imagePath: "assets/images/ic_quotes.svg", backgroundColor: Colors.white, iconColor: Colors.black, onClick: onShowQuotes),
-            horizontalSpacing(15),
-            CardActionItem(imagePath: "assets/images/ic_write_diary.svg", backgroundColor: Colors.white, iconColor: Colors.black, onClick: onWriteDiary),
-            horizontalSpacing(15),
-            showingCalendar ? CardActionItem(imagePath: "assets/images/ic_return_card_mode.svg", backgroundColor: HexColor("77CDFF"), iconColor: Colors.white, onClick:
-            onSwitchCardMode) :
-            CardActionItem(imagePath: "assets/images/ic_calendar.svg", backgroundColor: Colors.white, iconColor: Colors.black, onClick: () { onSwitchCardMode(); }),
-            horizontalSpacing(10),
-          ],
-        )
-      ],
-    ),);
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const WeatherIcon(),
+          Wrap(
+            children: [
+              CardActionItem(imagePath: "assets/images/ic_quotes.svg", backgroundColor: Colors.white, iconColor: Colors.black, onClick: onShowQuotes),
+              horizontalSpacing(15),
+              CardActionItem(imagePath: "assets/images/ic_write_diary.svg", backgroundColor: Colors.white, iconColor: Colors.black, onClick: onWriteDiary),
+              horizontalSpacing(10),
+              // showingCalendar
+              //     ? CardActionItem(imagePath: "assets/images/ic_return_card_mode.svg", backgroundColor: HexColor("77CDFF"), iconColor: Colors.white, onClick: onSwitchCardMode)
+              //     : CardActionItem(
+              //         imagePath: "assets/images/ic_calendar.svg",
+              //         backgroundColor: Colors.white,
+              //         iconColor: Colors.black,
+              //         onClick: () {
+              //           onSwitchCardMode();
+              //         }),
+              // horizontalSpacing(10),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -56,7 +66,7 @@ class WeatherIcon extends StatelessWidget {
           children: [
             SvgPicture.asset(
               "assets/images/ic_weather.svg",
-              width: 30,
+              width: 25,
               color: Colors.white.withOpacity(0.8),
             ),
             horizontalSpacing(10),
@@ -79,6 +89,8 @@ class WeatherIcon extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 class CardActionItem extends StatelessWidget {

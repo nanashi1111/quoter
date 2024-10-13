@@ -31,7 +31,7 @@ class DiaryItem extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +54,7 @@ class DiaryItem extends StatelessWidget {
               color: darkCommonColor,
             ),
             Expanded(
-              flex: 2,
+              flex: 5,
               child: _provideDiaryContent(),
             )
           ],
@@ -90,8 +90,8 @@ class DiaryItem extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     "assets/images/ic_quote_open.svg",
-                    width: 20,
-                    height: 20,
+                    width: 15,
+                    height: 15,
                     color: darkCommonColor.withOpacity(0.5),
                   ),
                 ],
@@ -111,12 +111,12 @@ class DiaryItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  verticalSpacing(10),
+                  verticalSpacing(5),
                   Text(
                     diary.content,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.lato(fontWeight: FontWeight.normal, fontSize: 15, color: darkCommonColor.withOpacity(0.5)),
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -130,8 +130,8 @@ class DiaryItem extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     "assets/images/ic_quote_close.svg",
-                    width: 20,
-                    height: 20,
+                    width: 15,
+                    height: 15,
                     color: darkCommonColor.withOpacity(0.5),
                   ),
                 ],

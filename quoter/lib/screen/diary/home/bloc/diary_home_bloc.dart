@@ -25,5 +25,16 @@ class DiaryHomeBloc extends Bloc<DiaryHomeEvent, DiaryHomeState> {
     on<_SwitchViewMode>((event, emit) async {
       emit(state.copyWith(showingCalendar: !state.showingCalendar));
     });
+
+    on<_Refresh>((event, emit) async {
+      List<DiaryCard> cards = await diaryRepository.getDiaryCards(state.year);
+      emit(state.copyWith(cards: cards));
+    });
+
+
+    on<_UpdateCardDesign>((event, emit) async {
+      await diaryRepository.updateCardImage(event.card, event.design);
+      add(const DiaryHomeEvent.refresh());
+    });
   }
 }

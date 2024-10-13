@@ -12,6 +12,13 @@ class DiaryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double toolbarHeight = 56;
+    double galleryHeight = screenWidth * 9 / 16;
+    double dateHeight = 50;
+    double titleHeight = 50;
+    double contentHeight = screenHeight - toolbarHeight - galleryHeight - dateHeight - titleHeight;
     contentController.value = TextEditingValue(text: diary?.content ?? '');
     titleController.value = TextEditingValue(text: diary?.title ?? '');
     return Padding(
@@ -34,20 +41,20 @@ class DiaryContent extends StatelessWidget {
             ),
           ),
           verticalSpacing(20),
-          Expanded(
-              child: TextField(
-                  controller: contentController,
-                  style: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.normal),
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                    hintText: 'Write your today...',
-                    hintStyle: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.normal),
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  )))
+          SizedBox(height: contentHeight, child: TextField(
+              controller: contentController,
+              maxLines: 5000,
+              style: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.normal),
+              textAlign: TextAlign.start,
+              decoration: InputDecoration(
+                hintText: 'Write your today...',
+                hintStyle: GoogleFonts.lato(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.normal),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+              )),)
         ],
       ),
     );

@@ -59,10 +59,11 @@ class DataBaseManager {
       int diaryCount = await getNumberOfDaysHasDiary(card.month, card.year);
       print("diaryCount of ${card.month}/${card.year}: $diaryCount");
       card = card.copyWith(diary_count: diaryCount);
-      cards[index] = card;
+
       if (rawResult.isNotEmpty) {
         card = card.copyWith(month: rawResult[0]["month"], year: rawResult[0]["year"], image: rawResult[0]["image"]);
       }
+      cards[index] = card;
       index ++ ;
     }
     print(cards);
@@ -86,7 +87,6 @@ class DataBaseManager {
     Database database = await getDatabase();
     String query = "SELECT * FROM Diary WHERE month = $month AND year = $year";
     List<Map> rawResult = await database.rawQuery(query);
-    //List<Map> rawResult = await database.rawQuery("SELECT * FROM Diary");
     List<Diary> result = List.of([], growable: true);
     rawResult.forEach((element) {
       result.add(Diary(
@@ -96,11 +96,36 @@ class DataBaseManager {
   }
 
   Future<int> getNumberOfDaysHasDiary(int month, int year) async {
-    debugPrint("Get Number of Diary: $month / $year");
     Database database = await getDatabase();
     String query = "SELECT day FROM Diary WHERE month = $month AND year = $year GROUP BY day";
     List<Map> rawResult = await database.rawQuery(query);
-    debugPrint("RawResult: $rawResult");
     return rawResult.length;
+  }
+
+  Future<void> updateCardImage(int month, int year, String image) async {
+    Database database = await getDatabase();
+    String query = "SELECT * FROM DiaryCard WHERE month = $month AND year = $year";
+    List<Map> rawResult = await database.rawQuery(query);
+    if (rawResult.isEmpty) {
+      await database.transaction((txn) async {
+        await txn.insert("DiaryCard", {"month": month, "year": year, "image": image});
+      });
+    } else {
+      await database.transaction((txn) async {
+        await txn.update("DiaryCard", {"image": image}, where: "month = $month AND year = $year");
+      });
+    }
+  }
+
+  Future<List<Diary>> searchDiaries(String query) async {
+    Database database = await getDatabase();
+    String searchQuery = "SELECT * FROM Diary WHERE content LIKE '%$query%' OR title LIKE '%$query%'";
+    List<Map> rawResult = await database.rawQuery(searchQuery);
+    List<Diary> result = List.of([], growable: true);
+    rawResult.forEach((element) {
+      result.add(Diary(
+          id: element["id"], day: element["day"], month: element["month"], year: element["year"], content: element["content"], title: element["title"], images: element["images"]));
+    });
+    return result;
   }
 }
