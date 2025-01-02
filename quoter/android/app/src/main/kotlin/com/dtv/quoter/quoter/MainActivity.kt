@@ -27,9 +27,6 @@ class MainActivity: FlutterActivity() {
       when (call.method) {
         removeAdsForever -> {
           Log.d("MainActivity", "removeAdsForever")
-          disdjoaisjdaoisjdaiosd
-
-          result.success(true)
         }
         removeAds1Month -> {
           Log.d("MainActivity", "removeAds1Month")
