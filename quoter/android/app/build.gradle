@@ -45,10 +45,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.dtv.quoter.quoter"
+        applicationId "com.klmobile.quoter"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 19
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -56,11 +56,24 @@ android {
 
     }
 
+    signingConfigs {
+        dev {
+            keyAlias 'sapokd09akd9dio'
+            keyPassword 'e8923je2093i093'
+            storeFile file("quoter.jks")
+            storePassword "doqiw90e3i9kdlsm"
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.dev
+        }
+
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.dev
         }
     }
 }
