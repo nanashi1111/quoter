@@ -27,7 +27,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.dtv.quoter.quoter"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 35
+    compileSdk = 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {

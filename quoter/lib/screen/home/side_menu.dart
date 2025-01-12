@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quoter/common/colors.dart';
@@ -38,7 +40,7 @@ class SideMenu extends StatelessWidget {
                         onClick: () {
                           context.pushNamed("my_quotes");
                         }),
-                    Visibility(visible: true, child: SideMenuItem(
+                    Visibility(visible: Platform.isIOS, child: SideMenuItem(
                       model: SideMenuModel(icon: 'assets/images/ic_restore.svg', title: 'Restore purchases'),
                       onClick: () async {
                         onRestoreAds();

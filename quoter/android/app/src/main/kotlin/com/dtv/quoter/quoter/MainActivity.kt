@@ -1,7 +1,11 @@
 package com.dtv.quoter.quoter
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.klmobile.iap.BillingEventListener
 import com.klmobile.iap.BillingRepository
@@ -9,6 +13,8 @@ import com.klmobile.iap.BillingRepositoryImpl
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : FlutterActivity() {
 
@@ -36,6 +42,44 @@ class MainActivity : FlutterActivity() {
         super.onStart()
         billingRepository.createBillingClient(context)
         billingRepository.connectToGooglePlay()
+    }
+
+    private fun openUrl(url: String) {
+        val urlIntent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse( url)
+        )
+        urlIntent.`package` = "com.android.chrome"
+        startActivity(urlIntent)
+    }
+
+    private fun shareFile(filePath: String) {
+
+        // Load the Bitmap from the file
+        val bitmap = BitmapFactory.decodeFile(filePath)
+
+        // Save the Bitmap to a temporary file
+        val tempFile = File(context.cacheDir, "shared_image.png")
+        FileOutputStream(tempFile).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        }
+
+        // Get the URI for the temporary file
+        val uri: Uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            tempFile
+        )
+
+        // Create and launch the share intent
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "image/png"
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        context.startActivity(Intent.createChooser(shareIntent, "Share Image"))
     }
 
     override fun onDestroy() {
@@ -68,11 +112,14 @@ class MainActivity : FlutterActivity() {
                 }
 
                 openUrl -> {
-                    Log.d("MainActivity", "openUrl")
+                    val url = call.arguments as String
+                    openUrl(url)
                 }
 
                 shareFile -> {
-                    Log.d("MainActivity", "shareFile")
+                    val filePath = call.arguments  as String
+                    shareFile(filePath)
+
                 }
             }
         }

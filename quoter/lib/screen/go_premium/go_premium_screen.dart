@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +43,7 @@ class GoPremiumScreen extends StatelessWidget {
           },
         ),
         actions: [
-          GestureDetector(
+          Visibility(visible: Platform.isIOS,child: GestureDetector(
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Center(child: Text(
@@ -59,7 +61,7 @@ class GoPremiumScreen extends StatelessWidget {
                 showInformationDialog(context, "Error", "Somethings went wrong, please try again later");
               }
             },
-          )
+          ),)
         ],
       ),
       backgroundColor: darkCommonColor,
