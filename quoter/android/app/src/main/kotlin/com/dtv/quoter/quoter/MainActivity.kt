@@ -26,6 +26,9 @@ class MainActivity : FlutterActivity() {
         private const val removeAds1Month = "remove_ads_1_month";
         private const val removeAds2Months = "remove_ads_2_month";
         private const val removeAds6Months = "remove_ads_6_month";
+        private const val removeAds1Week = "remove_ads_1_week";
+        private const val removeAds2Weeks = "remove_ads_2_week";
+        private const val removeAds3Weeks = "remove_ads_3_week";
         private const val restoreProduct = "restoreProduct";
         private const val RC_SELECT_BLUETOOTH = 100
     }
@@ -94,6 +97,9 @@ class MainActivity : FlutterActivity() {
             CHANNEL
         ).setMethodCallHandler { call, result ->
             when (call.method) {
+                removeAds1Week,
+                removeAds2Weeks,
+                removeAds3Weeks,
                 removeAds1Month,
                 removeAds2Months,
                 removeAds6Months,

@@ -16,13 +16,22 @@ class ConfirmPurchaseModal extends StatelessWidget {
   String _providePriceText() {
     String price = "";
     switch (type) {
-      case 1:
+      case MethodChannelHandler.removeAdsType1Week:
+        price = "2 USD";
+        break;
+      case MethodChannelHandler.removeAdsType2Weeks:
+        price = "5 USD";
+        break;
+      case MethodChannelHandler.removeAdsType3Weeks:
+        price = "10 USD";
+        break;
+      case MethodChannelHandler.removeAdsType1Month:
         price = "15 USD";
         break;
-      case 2:
+      case MethodChannelHandler.removeAdsType2Months:
         price = "20 USD";
         break;
-      case 6:
+      case MethodChannelHandler.removeAdsType6Months:
         price = "50 USD";
         break;
       default:
@@ -35,13 +44,22 @@ class ConfirmPurchaseModal extends StatelessWidget {
   String _provideDescription() {
     String packageName = "";
     switch (type) {
-      case 1:
+      case MethodChannelHandler.removeAdsType1Week:
+        packageName = "Remove ads for 1 week";
+        break;
+      case MethodChannelHandler.removeAdsType2Weeks:
+        packageName = "Remove ads for 2 weeks";
+        break;
+      case MethodChannelHandler.removeAdsType3Weeks:
+        packageName = "Remove ads for 3 weeks";
+        break;
+      case MethodChannelHandler.removeAdsType1Month:
         packageName = "Remove ads for 1 month";
         break;
-      case 2:
+      case MethodChannelHandler.removeAdsType2Months:
         packageName = "Remove ads for 2 months";
         break;
-      case 6:
+      case MethodChannelHandler.removeAdsType6Months:
         packageName = "Remove ads for 6 months";
         break;
       default:

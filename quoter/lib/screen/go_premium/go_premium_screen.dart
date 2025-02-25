@@ -77,7 +77,39 @@ class GoPremiumScreen extends StatelessWidget {
             verticalSpacing(20),
             GoPremiumItem(
                 onClick: () {
-                  _showConfirmationDialog(context, 1);
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType1Week);
+                },
+                title: "Weekly\nSubscription",
+                price: '2 USD',
+                description: "• Free ads for 1 week\n• Auto renew after expired\n• You can cancel anytime",
+                colors: [HexColor("#000046"), HexColor("#1CB5E0")],
+                headerColor: HexColor("#000046"),
+
+                header: "Monthly Premium Subscription"),
+            GoPremiumItem(
+                onClick: () {
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType2Weeks);
+                },
+                title: "2 Weeks\nSubscription",
+                price: '5 USD',
+                description: "• Free ads for 2 weeks\n• Auto renew after expired\n• You can cancel anytime",
+                colors: [HexColor("#0575E6"), HexColor("#021B79")],
+                headerColor: HexColor("#0575E6"),
+                header: "Monthly Premium Subscription"),
+            GoPremiumItem(
+                onClick: () {
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType3Weeks);
+                },
+                title: "3 Weeks\nSubscription",
+                price: '10 USD',
+                description: "• Free ads for 3 weeks\n• Auto renew after expired\n• You can cancel anytime",
+                colors: [HexColor("#3a6186"), HexColor("#89253e")],
+                headerColor: HexColor("#3a6186"),
+
+                header: "Monthly Premium Subscription"),
+            GoPremiumItem(
+                onClick: () {
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType1Month);
                 },
                 title: "Monthly\nSubscription",
                 price: '15 USD',
@@ -88,8 +120,7 @@ class GoPremiumScreen extends StatelessWidget {
                 header: "Monthly Premium Subscription"),
             GoPremiumItem(
                 onClick: () {
-                  _showConfirmationDialog(context, 2);
-
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType2Months);
                 },
                 title: "2 Months\nSubscription",
                 price: '20 USD',
@@ -99,8 +130,7 @@ class GoPremiumScreen extends StatelessWidget {
                 header: "2 Months Premium Subscription"),
             GoPremiumItem(
                 onClick: () {
-                  _showConfirmationDialog(context, 6);
-
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsType6Months);
                 },
                 title: "6 Months\nSubscription",
                 price: '50 USD',
@@ -110,8 +140,7 @@ class GoPremiumScreen extends StatelessWidget {
                 header: "6 Months Premium Subscription"),
             GoPremiumItem(
                 onClick: () {
-                  _showConfirmationDialog(context, 0);
-
+                  _showConfirmationDialog(context, MethodChannelHandler.removeAdsTypeForever);
                 },
                 title: "Remove ads\nForever",
                 price: '100 USD',
@@ -159,15 +188,27 @@ class GoPremiumScreen extends StatelessWidget {
                 bool purchaseResult = false;
                 String successMessage = "";
                 switch(type) {
-                  case 1:
+                  case MethodChannelHandler.removeAdsType1Week:
+                    purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Week);
+                    successMessage = "You have purchased for 1 week ads free. Have a good day. Thanks from Quoter team.";
+                    break;
+                  case MethodChannelHandler.removeAdsType2Weeks:
+                    purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Weeks);
+                    successMessage = "You have purchased for 2 weeks ads free. Have a good day. Thanks from Quoter team.";
+                    break;
+                  case MethodChannelHandler.removeAdsType3Weeks:
+                    purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds3Weeks);
+                    successMessage = "You have purchased for 3 weeks ads free. Have a good day. Thanks from Quoter team.";
+                    break;
+                  case MethodChannelHandler.removeAdsType1Month:
                     purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds1Month);
                     successMessage = "You have purchased for 1 month ads free. Have a good day. Thanks from Quoter team.";
                     break;
-                  case 2:
+                  case MethodChannelHandler.removeAdsType2Months:
                     purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds2Months);
                     successMessage = "You have purchased for 2 months ads free. Have a good day. Thanks from Quoter team.";
                     break;
-                  case 6:
+                  case MethodChannelHandler.removeAdsType6Months:
                     purchaseResult = await MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.removeAds6Months);
                     successMessage = "You have purchased for 6 months ads free. Have a good day. Thanks from Quoter team.";
                     break;
