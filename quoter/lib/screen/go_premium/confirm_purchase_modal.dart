@@ -19,10 +19,7 @@ class ConfirmPurchaseModal extends StatelessWidget {
       case MethodChannelHandler.removeAdsType1Week:
         price = "2 USD";
         break;
-      case MethodChannelHandler.removeAdsType2Weeks:
-        price = "5 USD";
-        break;
-      case MethodChannelHandler.removeAdsType3Weeks:
+      case MethodChannelHandler.removeAdsType4Weeks:
         price = "10 USD";
         break;
       case MethodChannelHandler.removeAdsType1Month:
@@ -47,11 +44,8 @@ class ConfirmPurchaseModal extends StatelessWidget {
       case MethodChannelHandler.removeAdsType1Week:
         packageName = "Remove ads for 1 week";
         break;
-      case MethodChannelHandler.removeAdsType2Weeks:
-        packageName = "Remove ads for 2 weeks";
-        break;
-      case MethodChannelHandler.removeAdsType3Weeks:
-        packageName = "Remove ads for 3 weeks";
+      case MethodChannelHandler.removeAdsType4Weeks:
+        packageName = "Remove ads for 4 weeks";
         break;
       case MethodChannelHandler.removeAdsType1Month:
         packageName = "Remove ads for 1 month";

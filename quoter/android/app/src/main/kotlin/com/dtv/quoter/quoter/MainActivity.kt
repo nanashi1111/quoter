@@ -27,16 +27,14 @@ class MainActivity : FlutterActivity() {
         private const val removeAds2Months = "remove_ads_2_month";
         private const val removeAds6Months = "remove_ads_6_month";
         private const val removeAds1Week = "remove_ads_1_week";
-        private const val removeAds2Weeks = "remove_ads_2_week";
-        private const val removeAds3Weeks = "remove_ads_3_week";
-        private const val restoreProduct = "restoreProduct";
+        private const val removeAds4Weeks = "remove_ads_4_week";
         private const val RC_SELECT_BLUETOOTH = 100
     }
 
     private val billingRepository: BillingRepository by lazy {
         BillingRepositoryImpl.getInstance(lifecycleScope)
             .setProductIds(
-                listSubscriptionId = listOf(removeAds1Month, removeAds2Months, removeAds6Months),
+                listSubscriptionId = listOf(removeAds1Week,removeAds4Weeks,removeAds1Month, removeAds2Months, removeAds6Months),
                 listNoneConsumableId = listOf(removeAdsForever)
             )
     }
@@ -98,8 +96,7 @@ class MainActivity : FlutterActivity() {
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 removeAds1Week,
-                removeAds2Weeks,
-                removeAds3Weeks,
+                removeAds4Weeks,
                 removeAds1Month,
                 removeAds2Months,
                 removeAds6Months,
