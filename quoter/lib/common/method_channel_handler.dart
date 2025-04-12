@@ -16,6 +16,7 @@ class MethodChannelHandler {
   static const removeAds1Week = "remove_ads_1_week";
   static const removeAds4Weeks = "remove_ads_4_week";
   static const restoreProduct = "restoreProduct";
+  static const getPackageName = "getPackageName";
 
   static const removeAdsType1Week = 11;
   static const removeAdsType4Weeks = 14;

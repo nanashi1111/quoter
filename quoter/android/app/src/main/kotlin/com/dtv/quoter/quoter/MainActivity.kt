@@ -28,6 +28,7 @@ class MainActivity : FlutterActivity() {
         private const val removeAds6Months = "remove_ads_6_month";
         private const val removeAds1Week = "remove_ads_1_week";
         private const val removeAds4Weeks = "remove_ads_4_week";
+        private const val getPackageName = "getPackageName";
         private const val RC_SELECT_BLUETOOTH = 100
     }
 
@@ -124,6 +125,11 @@ class MainActivity : FlutterActivity() {
                     shareFile(filePath)
 
                 }
+                getPackageName -> {
+                    val packageName = context.packageName
+                    result.success(packageName)
+                }
+
             }
         }
     }

@@ -25,7 +25,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext homeContext) {
     return BlocProvider<SideMenuBloc>(
-      create: (_) => SideMenuBloc()..add(const SideMenuEvent.getPurchaseInfo(afterRemoveAds: false)),
+      create: (_) => SideMenuBloc()..add(const SideMenuEvent.checkIfPurchaseEnabled()),
       child: BlocBuilder<SideMenuBloc, SideMenuState>(
         builder: (sideMenuContext, sideMenuState) {
           return Stack(
@@ -58,6 +58,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   loading: sideMenuState.loading,
                   restored: sideMenuState.restored,
                   purchased: sideMenuState.purchased,
+                  purchaseEnabled: sideMenuState.purchaseEnabled,
                 ),
                 appBar: AppBar(
                   backgroundColor: Colors.black.withOpacity(0.5),

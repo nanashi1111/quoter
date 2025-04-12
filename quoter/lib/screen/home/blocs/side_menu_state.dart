@@ -4,5 +4,5 @@ part of 'side_menu_bloc.dart';
 class SideMenuState with _$SideMenuState {
   const factory SideMenuState.initial({required bool purchased,
     required bool restored,
-    required bool loading}) = _Initial;
+    required bool loading, required bool purchaseEnabled}) = _Initial;
 }

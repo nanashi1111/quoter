@@ -19,8 +19,9 @@ class SideMenu extends StatelessWidget {
   final bool purchased;
   final bool restored;
   final bool loading;
+  final bool purchaseEnabled;
 
-  const SideMenu({super.key,required this.onRestoreAds, required this.purchased, required this.restored, required this.loading, required this.onRemoveAds});
+  const SideMenu({super.key,required this.onRestoreAds, required this.purchased, required this.restored, required this.loading, required this.onRemoveAds, required this.purchaseEnabled});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class SideMenu extends StatelessWidget {
                       },
                     ),),
                     Visibility(
-                      visible: !purchased,
+                      visible: !purchased && purchaseEnabled,
                       child: SideMenuItem(
                           model: SideMenuModel(icon: 'assets/images/ic_remove_ads.svg', title: 'Remove ads'),
                           onClick: () {
@@ -57,7 +58,7 @@ class SideMenu extends StatelessWidget {
                     SideMenuItem(
                         model: SideMenuModel(icon: 'assets/images/ic_policy.svg', title: 'Privacy & Policy'),
                         onClick: () {
-                          MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.openUrl, data: "https://cungdev.com/quote-creator-privacy-policy/");
+                          MethodChannelHandler.instance.invokeMethod(MethodChannelHandler.openUrl, data: "https://cungdev.com/quotes-2025-privacy-policy-term-service/");
                         })
                   ],
                 )),
